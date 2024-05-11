@@ -12,6 +12,11 @@ class Validator {
 
   static bool isValidEgPhone(String? value) {
     if (value == null) return false;
-    return RegExp(r'^(010|011|012|015[0-9]{8})$').hasMatch(value);
+    return RegExp(r'^(010|011|012|015)[0-9]{8}$').hasMatch(value);
+  }
+
+  static bool hasMinLength(String? value, {int minLength = 1}) {
+    if (value == null) return false;
+    return value.trim().length >= minLength;
   }
 }
