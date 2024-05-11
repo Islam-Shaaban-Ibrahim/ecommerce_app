@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void goToHome() {
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 1), () {
       Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
     });
   }
