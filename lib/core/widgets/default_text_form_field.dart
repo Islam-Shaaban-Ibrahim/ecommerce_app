@@ -1,10 +1,9 @@
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomTextFormField extends StatefulWidget {
-  CustomTextFormField(
+class DefaultTextFormField extends StatefulWidget {
+  DefaultTextFormField(
       {super.key,
       required this.hintText,
       required this.controller,
@@ -24,10 +23,10 @@ class CustomTextFormField extends StatefulWidget {
   final String? Function(String?)? validator;
 
   @override
-  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+  State<DefaultTextFormField> createState() => _DefaultTextFormFieldState();
 }
 
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
+class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(

@@ -1,10 +1,14 @@
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:ecommerce_app/core/utils/validator.dart';
-import 'package:ecommerce_app/core/widgets/custom_elevated_button.dart';
-import 'package:ecommerce_app/core/widgets/custom_text_form_field.dart';
+import 'package:ecommerce_app/core/widgets/default_elevated_button.dart';
+import 'package:ecommerce_app/core/widgets/default_text_form_field.dart';
+import 'package:ecommerce_app/features/auth/data/models/login_request.dart';
+import 'package:ecommerce_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:ecommerce_app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final authCubit = AuthCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ?.copyWith(fontSize: 18.sp),
                   ),
                 ),
-                CustomTextFormField(
+                DefaultTextFormField(
                   keyBoardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (!Validator.isValidEmail(value)) {
@@ -91,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ?.copyWith(fontSize: 18.sp),
                   ),
                 ),
-                CustomTextFormField(
+                DefaultTextFormField(
                   isObscure: true,
                   isPassword: true,
                   keyBoardType: TextInputType.visiblePassword,
@@ -128,7 +133,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 45.h,
                 ),
-                CustomElevatedButton(onPressed: _logIn, label: 'Login'),
+                BlocListener<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      if (state is LoginLoading) {
+                      } else if (state is LoginSuccess) {
+                      } else if (state is LoginError) {}
+                    },
+                    bloc: authCubit,
+                    child: DefaultElevatedButton(
+                        onPressed: _logIn, label: 'Login')),
                 SizedBox(
                   height: 15.h,
                 ),
@@ -157,7 +170,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _logIn() {
-    if (formKey.currentState?.validate() == true) {}
-    setState(() {});
+    if (formKey.currentState?.validate() == true) {
+      authCubit.login(
+        LoginRequest(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        ),
+      );
+    }
   }
 }

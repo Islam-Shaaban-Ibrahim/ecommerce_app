@@ -2,8 +2,8 @@ import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomElevatedButton extends StatelessWidget {
-  const CustomElevatedButton(
+class DefaultElevatedButton extends StatelessWidget {
+  const DefaultElevatedButton(
       {super.key, required this.onPressed, required this.label});
   final void Function()? onPressed;
   final String label;

@@ -1,7 +1,13 @@
 import 'package:ecommerce_app/core/utils/validator.dart';
-import 'package:ecommerce_app/core/widgets/custom_elevated_button.dart';
-import 'package:ecommerce_app/core/widgets/custom_text_form_field.dart';
+import 'package:ecommerce_app/core/widgets/default_elevated_button.dart';
+import 'package:ecommerce_app/core/widgets/default_text_form_field.dart';
+import 'package:ecommerce_app/features/auth/data/models/login_request.dart';
+import 'package:ecommerce_app/features/auth/data/models/register_request.dart';
+import 'package:ecommerce_app/features/auth/data/models/register_response/register_response.dart';
+import 'package:ecommerce_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:ecommerce_app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -20,6 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final phoneController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  final authCubit = AuthCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(
                   height: 24.h,
                 ),
-                CustomTextFormField(
+                DefaultTextFormField(
                   keyBoardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -78,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ?.copyWith(fontSize: 18.sp),
                   ),
                 ),
-                CustomTextFormField(
+                DefaultTextFormField(
                   keyBoardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -102,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ?.copyWith(fontSize: 18.sp),
                   ),
                 ),
-                CustomTextFormField(
+                DefaultTextFormField(
                   keyBoardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -126,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ?.copyWith(fontSize: 18.sp),
                   ),
                 ),
-                CustomTextFormField(
+                DefaultTextFormField(
                   isObscure: true,
                   isPassword: true,
                   keyBoardType: TextInputType.visiblePassword,
@@ -147,7 +154,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(
                   height: 56.h,
                 ),
-                CustomElevatedButton(onPressed: _register, label: 'Sign up'),
+                BlocListener<AuthCubit, AuthState>(
+                  bloc: authCubit,
+                  listener: (context, state) {
+                    if (state is RegisterLoading) {
+                    } else if (state is RegisterSuccess) {
+                    } else if (state is RegisterError) {}
+                  },
+                  child: DefaultElevatedButton(
+                      onPressed: _register, label: 'Sign up'),
+                ),
                 SizedBox(
                   height: 15.h,
                 ),
@@ -160,7 +176,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _register() {
-    if (formKey.currentState?.validate() == true) {}
-    setState(() {});
+    if (formKey.currentState?.validate() == true) {
+      authCubit.register(
+        RegisterRequest(
+          name: nameController.text.trim(),
+          phone: phoneController.text.trim(),
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        ),
+      );
+    }
   }
 }
