@@ -1,4 +1,6 @@
+import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
+import 'package:ecommerce_app/core/utils/ui_utils.dart';
 import 'package:ecommerce_app/core/utils/validator.dart';
 import 'package:ecommerce_app/core/widgets/default_elevated_button.dart';
 import 'package:ecommerce_app/core/widgets/default_text_form_field.dart';
@@ -6,6 +8,7 @@ import 'package:ecommerce_app/features/auth/data/models/login_request.dart';
 import 'package:ecommerce_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ecommerce_app/features/auth/presentation/cubit/auth_states.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/register_screen.dart';
+import 'package:ecommerce_app/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final authCubit = AuthCubit();
+  final authCubit = serviceLocator.get<AuthCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 DefaultTextFormField(
-                  isObscure: true,
                   isPassword: true,
                   keyBoardType: TextInputType.visiblePassword,
                   validator: (value) {
@@ -136,8 +138,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocListener<AuthCubit, AuthState>(
                     listener: (context, state) {
                       if (state is LoginLoading) {
+                        UIUtils.showLoading(
+                            isDismissible: false,
+                            context: context,
+                            actionName: 'Loading...');
                       } else if (state is LoginSuccess) {
-                      } else if (state is LoginError) {}
+                        UIUtils.hideLoading(context: context);
+                        Navigator.of(context).pushNamed(HomeScreen.routeName);
+                      } else if (state is LoginError) {
+                        UIUtils.hideLoading(context: context);
+
+                        UIUtils.showMessage(
+                            isDismissible: false,
+                            title: 'Error',
+                            negAction: 'Cancel',
+                            context: context,
+                            message: state.message);
+                      }
                     },
                     bloc: authCubit,
                     child: DefaultElevatedButton(

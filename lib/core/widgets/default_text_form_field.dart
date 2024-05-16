@@ -9,13 +9,12 @@ class DefaultTextFormField extends StatefulWidget {
       required this.controller,
       this.validator,
       this.isPassword = false,
-      this.isObscure = false,
       required this.keyBoardType,
       this.suffix,
       this.maxLength});
   final String hintText;
   final int? maxLength;
-  bool isObscure;
+  bool isObscure = true;
   bool isPassword;
   Widget? suffix;
   final TextInputType keyBoardType;
@@ -31,7 +30,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       maxLength: widget.maxLength,
-      obscureText: widget.isObscure,
+      obscureText: widget.isPassword ? widget.isObscure : false,
       keyboardType: widget.keyBoardType,
       validator: widget.validator,
       controller: widget.controller,

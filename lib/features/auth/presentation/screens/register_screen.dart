@@ -1,11 +1,14 @@
+import 'package:ecommerce_app/core/di/service_locator.dart';
+import 'package:ecommerce_app/core/utils/ui_utils.dart';
 import 'package:ecommerce_app/core/utils/validator.dart';
 import 'package:ecommerce_app/core/widgets/default_elevated_button.dart';
 import 'package:ecommerce_app/core/widgets/default_text_form_field.dart';
 import 'package:ecommerce_app/features/auth/data/models/login_request.dart';
 import 'package:ecommerce_app/features/auth/data/models/register_request.dart';
-import 'package:ecommerce_app/features/auth/data/models/register_response/register_response.dart';
+import 'package:ecommerce_app/features/auth/data/models/register_response.dart';
 import 'package:ecommerce_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ecommerce_app/features/auth/presentation/cubit/auth_states.dart';
+import 'package:ecommerce_app/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final phoneController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  final authCubit = AuthCubit();
+  final authCubit = serviceLocator.get<AuthCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +137,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 DefaultTextFormField(
-                  isObscure: true,
                   isPassword: true,
                   keyBoardType: TextInputType.visiblePassword,
                   validator: (value) {
@@ -158,8 +160,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   bloc: authCubit,
                   listener: (context, state) {
                     if (state is RegisterLoading) {
+                      UIUtils.showLoading(
+                          isDismissible: false,
+                          context: context,
+                          actionName: 'Loading...');
                     } else if (state is RegisterSuccess) {
-                    } else if (state is RegisterError) {}
+                      UIUtils.hideLoading(context: context);
+                      Navigator.of(context).pushNamed(HomeScreen.routeName);
+                    } else if (state is RegisterError) {
+                      UIUtils.hideLoading(context: context);
+                      UIUtils.showMessage(
+                          isDismissible: false,
+                          title: 'Error',
+                          negAction: 'cancel',
+                          context: context,
+                          message: state.message);
+                    }
                   },
                   child: DefaultElevatedButton(
                       onPressed: _register, label: 'Sign up'),

@@ -1,8 +1,8 @@
-import 'user.dart';
+import 'package:ecommerce_app/features/auth/data/models/user_model.dart';
 
 class LoginResponse {
   final String? message;
-  final User? user;
+  final UserModel? user;
   final String? token;
 
   const LoginResponse({this.message, this.user, this.token});
@@ -11,7 +11,7 @@ class LoginResponse {
         message: json['message'] as String?,
         user: json['user'] == null
             ? null
-            : User.fromJson(json['user'] as Map<String, dynamic>),
+            : UserModel.fromJson(json['user'] as Map<String, dynamic>),
         token: json['token'] as String?,
       );
 

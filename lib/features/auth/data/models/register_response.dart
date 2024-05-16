@@ -1,8 +1,8 @@
-import 'user.dart';
+import 'user_model.dart';
 
 class RegisterResponse {
   final String? message;
-  final User? user;
+  final UserModel? user;
   final String? token;
 
   const RegisterResponse({this.message, this.user, this.token});
@@ -12,7 +12,7 @@ class RegisterResponse {
       message: json['message'] as String?,
       user: json['user'] == null
           ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
+          : UserModel.fromJson(json['user'] as Map<String, dynamic>),
       token: json['token'] as String?,
     );
   }

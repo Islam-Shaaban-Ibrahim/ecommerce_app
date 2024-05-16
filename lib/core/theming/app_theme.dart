@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 
 class MyAppTheme {
   static ThemeData mainTheme = ThemeData(
+    highlightColor: Colors.transparent,
+    splashColor: Colors.transparent,
     primaryColor: ColorsManager.primaryColor,
     textTheme: const TextTheme(
       titleLarge: TextStyle(
           fontWeight: FontWeight.w700, color: ColorsManager.whiteColor),
+      titleMedium: TextStyle(
+          fontWeight: FontWeight.w700, color: ColorsManager.blackColor),
       titleSmall: TextStyle(
           fontWeight: FontWeight.w300, color: ColorsManager.whiteColor),
       bodySmall: TextStyle(color: ColorsManager.whiteColor),

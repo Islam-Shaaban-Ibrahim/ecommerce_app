@@ -1,11 +1,11 @@
-class User {
-  final String? name;
-  final String? email;
+import 'package:ecommerce_app/features/auth/domain/entities/user.dart';
+
+class UserModel extends User {
   final String? role;
 
-  const User({this.name, this.email, this.role});
+  const UserModel({super.email, super.name, this.role});
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         name: json['name'] as String?,
         email: json['email'] as String?,
         role: json['role'] as String?,

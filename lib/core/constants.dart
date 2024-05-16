@@ -3,3 +3,7 @@ class APIConstants {
   static const String loginEndPoint = 'auth/signin';
   static const String registerEndPoint = 'auth/signup';
 }
+
+class CacheConstants {
+  static const String tokenKey = 'token';
+}
