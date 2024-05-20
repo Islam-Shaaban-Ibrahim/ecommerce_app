@@ -3,6 +3,22 @@ import 'package:flutter/material.dart';
 
 class MyAppTheme {
   static ThemeData mainTheme = ThemeData(
+    splashFactory: NoSplash.splashFactory,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      enableFeedback: false,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: ColorsManager.primaryColor,
+      selectedItemColor: ColorsManager.primaryColor,
+      selectedIconTheme: IconThemeData(
+        color: ColorsManager.primaryColor,
+      ),
+      unselectedIconTheme: IconThemeData(
+        color: ColorsManager.whiteColor,
+      ),
+      unselectedItemColor: ColorsManager.whiteColor,
+    ),
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     primaryColor: ColorsManager.primaryColor,

@@ -7,10 +7,10 @@ import 'package:ecommerce_app/features/home/presentation/screens/home_screen.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
-  configureDependencies();
+  await configureDependencies();
   runApp(const ECommerceApp());
 }
 
@@ -25,7 +25,7 @@ class ECommerceApp extends StatelessWidget {
         title: 'E-Commerce',
         theme: MyAppTheme.mainTheme,
         debugShowCheckedModeBanner: false,
-        initialRoute: LoginScreen.routeName,
+        initialRoute: HomeScreen.routeName,
         routes: {
           SplashScreen.routeName: (context) => const SplashScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),

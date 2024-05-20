@@ -16,6 +16,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl(this.localDataSource, this.remoteDataSource);
 
+  @override
   Future<Either<Failure, User>> login(LoginRequest requestBody) async {
     try {
       final response = await remoteDataSource.login(requestBody);
