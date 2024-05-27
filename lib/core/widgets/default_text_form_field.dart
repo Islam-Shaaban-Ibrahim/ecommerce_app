@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DefaultTextFormField extends StatefulWidget {
-  DefaultTextFormField(
+  const DefaultTextFormField(
       {super.key,
       required this.hintText,
       required this.controller,
@@ -14,9 +14,9 @@ class DefaultTextFormField extends StatefulWidget {
       this.maxLength});
   final String hintText;
   final int? maxLength;
-  bool isObscure = true;
-  bool isPassword;
-  Widget? suffix;
+
+  final bool isPassword;
+  final Widget? suffix;
   final TextInputType keyBoardType;
   final TextEditingController controller;
   final String? Function(String?)? validator;
@@ -26,11 +26,13 @@ class DefaultTextFormField extends StatefulWidget {
 }
 
 class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
+  bool isObscure = true;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       maxLength: widget.maxLength,
-      obscureText: widget.isPassword ? widget.isObscure : false,
+      obscureText: widget.isPassword ? isObscure : false,
       keyboardType: widget.keyBoardType,
       validator: widget.validator,
       controller: widget.controller,
@@ -61,10 +63,10 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {
-                  widget.isObscure = !widget.isObscure;
+                  isObscure = !isObscure;
                   setState(() {});
                 },
-                icon: widget.isObscure
+                icon: isObscure
                     ? const Icon(Icons.visibility_outlined)
                     : const Icon(Icons.visibility_off_outlined),
               )

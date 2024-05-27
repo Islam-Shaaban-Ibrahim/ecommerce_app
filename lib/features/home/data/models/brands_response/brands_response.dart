@@ -23,6 +23,6 @@ class BrandsResponse {
   Map<String, dynamic> toJson() => {
         'results': results,
         'metadata': metadata?.toJson(),
-        'data': data?.map((e) => e.toJson()).toList(),
+        'data': data.map((e) => e.toJson()).toList(),
       };
 }

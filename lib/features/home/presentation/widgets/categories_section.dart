@@ -16,14 +16,14 @@ class CategorySection extends StatefulWidget {
 }
 
 class _CategorySectionState extends State<CategorySection> {
-  final homeCubit = serviceLocator.get<HomeCubit>();
+  final homeCubit = serviceLocator.get<HomeCubit>()..getCategories();
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 280.h,
       child: BlocBuilder(
-        bloc: homeCubit..getCategories(),
+        bloc: homeCubit,
         builder: (context, state) {
           if (state is GetCategoriesLoading) {
             return const LoadingIndicator();
@@ -32,16 +32,14 @@ class _CategorySectionState extends State<CategorySection> {
                 message: state.error,
                 onPressed: () {
                   homeCubit.getCategories();
-                  setState(() {});
                 });
           } else if (state is GetCategoriesSuccess) {
             return GridView.builder(
               scrollDirection: Axis.horizontal,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 100 / 144,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
+                crossAxisSpacing: 16.h,
+                mainAxisSpacing: 16.w,
                 mainAxisExtent: 100.h,
               ),
               itemBuilder: (context, index) => CategoryItem(

@@ -1,6 +1,4 @@
 import 'package:ecommerce_app/core/di/service_locator.dart';
-import 'package:ecommerce_app/core/theming/app_colors.dart';
-import 'package:ecommerce_app/core/utils/ui_utils.dart';
 import 'package:ecommerce_app/core/widgets/error_indicator.dart';
 import 'package:ecommerce_app/core/widgets/loading_indicator.dart';
 import 'package:ecommerce_app/features/home/presentation/cubit/home_cubit.dart';
@@ -18,14 +16,14 @@ class BrandSection extends StatefulWidget {
 }
 
 class _BrandSectionState extends State<BrandSection> {
-  final homeCubit = serviceLocator.get<HomeCubit>();
+  final homeCubit = serviceLocator.get<HomeCubit>()..getBrands();
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 280.h,
       child: BlocBuilder<HomeCubit, HomeState>(
-          bloc: homeCubit..getBrands(),
+          bloc: homeCubit,
           builder: (context, state) {
             if (state is GetBrandsLoading) {
               return const LoadingIndicator();
@@ -34,7 +32,6 @@ class _BrandSectionState extends State<BrandSection> {
                 message: state.error,
                 onPressed: () {
                   homeCubit.getBrands();
-                  setState(() {});
                 },
               );
             } else if (state is GetBrandsSuccess) {
@@ -42,9 +39,8 @@ class _BrandSectionState extends State<BrandSection> {
                 scrollDirection: Axis.horizontal,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 100 / 144,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16.h,
+                  mainAxisSpacing: 16.w,
                   mainAxisExtent: 100.h,
                 ),
                 itemBuilder: (context, index) => BrandItem(

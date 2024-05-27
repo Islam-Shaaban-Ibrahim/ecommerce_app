@@ -1,10 +1,5 @@
-import 'package:ecommerce_app/core/error/exception.dart';
-import 'package:ecommerce_app/features/auth/data/data_sources/local/auth_shared_pref_local_data_source.dart';
-import 'package:ecommerce_app/features/auth/data/data_sources/remote/auth_api_remote_data_source.dart';
 import 'package:ecommerce_app/features/auth/data/models/login_request.dart';
 import 'package:ecommerce_app/features/auth/data/models/register_request.dart';
-import 'package:ecommerce_app/features/auth/data/models/user_model.dart';
-import 'package:ecommerce_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:ecommerce_app/features/auth/domain/use_cases/login.dart';
 import 'package:ecommerce_app/features/auth/domain/use_cases/register.dart';
 import 'package:ecommerce_app/features/auth/presentation/cubit/auth_states.dart';

@@ -1,5 +1,4 @@
 import 'package:ecommerce_app/core/di/service_locator.dart';
-import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:ecommerce_app/core/utils/ui_utils.dart';
 import 'package:ecommerce_app/core/utils/validator.dart';
 import 'package:ecommerce_app/core/widgets/default_elevated_button.dart';
@@ -10,7 +9,6 @@ import 'package:ecommerce_app/features/auth/presentation/cubit/auth_states.dart'
 import 'package:ecommerce_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:ecommerce_app/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';

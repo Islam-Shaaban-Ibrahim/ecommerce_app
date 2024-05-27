@@ -4,11 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AnnouncementSection extends StatelessWidget {
   const AnnouncementSection({super.key});
+
   final List<String> bannersPath = const [
     'assets/images/banner1.png',
     'assets/images/banner2.png',
     'assets/images/banner3.png',
   ];
+
   @override
   Widget build(BuildContext context) {
     return CarouselSlider.builder(

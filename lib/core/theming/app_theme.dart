@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 
 class MyAppTheme {
   static ThemeData mainTheme = ThemeData(
+    appBarTheme: const AppBarTheme(
+      iconTheme: IconThemeData(color: ColorsManager.primaryColor),
+      centerTitle: true,
+    ),
     splashFactory: NoSplash.splashFactory,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       enableFeedback: false,
@@ -31,7 +35,9 @@ class MyAppTheme {
           fontWeight: FontWeight.w300, color: ColorsManager.whiteColor),
       bodySmall: TextStyle(color: ColorsManager.whiteColor),
       bodyMedium: TextStyle(
-          color: ColorsManager.whiteColor, fontWeight: FontWeight.w400),
+        color: ColorsManager.whiteColor,
+        fontWeight: FontWeight.w400,
+      ),
     ),
   );
 }
