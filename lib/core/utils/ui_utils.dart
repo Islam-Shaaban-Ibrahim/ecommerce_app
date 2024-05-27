@@ -1,6 +1,5 @@
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UIUtils {
@@ -58,9 +57,10 @@ class UIUtils {
       actions.add(TextButton(
           style: ButtonStyle(
             textStyle: MaterialStatePropertyAll<TextStyle?>(
-                Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 20.sp,
-                    )),
+              Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 20.sp,
+                  ),
+            ),
             foregroundColor:
                 const MaterialStatePropertyAll<Color>(ColorsManager.whiteColor),
             backgroundColor:

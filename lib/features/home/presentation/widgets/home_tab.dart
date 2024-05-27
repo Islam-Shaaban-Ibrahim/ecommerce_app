@@ -25,7 +25,7 @@ class HomeTab extends StatelessWidget {
                 'assets/images/routeLogo.png',
                 width: 66.w,
                 height: 22.h,
-                fit: BoxFit.cover,
+                fit: BoxFit.fitHeight,
                 filterQuality: FilterQuality.high,
               ),
             ),

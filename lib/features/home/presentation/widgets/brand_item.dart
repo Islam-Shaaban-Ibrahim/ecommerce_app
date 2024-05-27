@@ -17,6 +17,7 @@ class BrandItem extends StatelessWidget {
           flex: 8,
           child: Container(
             decoration: BoxDecoration(
+                border: Border.all(color: ColorsManager.greyColor),
                 image: DecorationImage(
                   image: CachedNetworkImageProvider(brand.image),
                 ),

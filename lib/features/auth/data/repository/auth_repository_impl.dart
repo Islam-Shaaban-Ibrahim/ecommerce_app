@@ -31,6 +31,7 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
   Future<Either<Failure, User>> register(RegisterRequest requestBody) async {
     try {
       final response = await remoteDataSource.register(requestBody);
