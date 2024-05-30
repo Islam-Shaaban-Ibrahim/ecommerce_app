@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:ecommerce_app/core/widgets/loading_indicator.dart';
+import 'package:ecommerce_app/features/cart/presentation/screens/cart_screen.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +40,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(CartScreen.routeName);
+            },
             icon: ImageIcon(
               const AssetImage(
                 'assets/images/cartIcon.png',

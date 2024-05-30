@@ -5,7 +5,7 @@ import 'package:ecommerce_app/core/widgets/search_bar_with_cart.dart';
 import 'package:ecommerce_app/features/products/presentation/cubit/products_cubit.dart';
 import 'package:ecommerce_app/features/products/presentation/cubit/products_states.dart';
 import 'package:ecommerce_app/features/products/presentation/widgets/product_item.dart';
-import 'package:ecommerce_app/features/profile/presentation/screens/product_details_screen.dart';
+import 'package:ecommerce_app/features/products/presentation/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

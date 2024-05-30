@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ErrorIndicator extends StatelessWidget {
-  const ErrorIndicator(
-      {super.key, required this.message, required this.onPressed});
+  const ErrorIndicator({super.key, required this.message, this.onPressed});
   final String message;
-  final void Function() onPressed;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +24,12 @@ class ErrorIndicator extends StatelessWidget {
         const SizedBox(
           height: 15,
         ),
-        ElevatedButton(
-          onPressed: onPressed,
-          child: const Text('Try Again'),
-        )
+        onPressed != null
+            ? ElevatedButton(
+                onPressed: onPressed,
+                child: const Text('Try Again'),
+              )
+            : const SizedBox(),
       ],
     );
   }

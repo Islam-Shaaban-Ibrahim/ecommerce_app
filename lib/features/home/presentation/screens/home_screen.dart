@@ -2,7 +2,7 @@ import 'package:ecommerce_app/features/home/presentation/widgets/home_tab.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/nav_bar_icon.dart';
 import 'package:ecommerce_app/features/products/presentation/widgets/products_tab.dart';
 import 'package:ecommerce_app/features/profile/presentation/widgets/profile_tab.dart';
-import 'package:ecommerce_app/features/wishlist/presentation/screens/widgets/wishlist_tab.dart';
+import 'package:ecommerce_app/features/wishlist/presentation/widgets/wishlist_tab.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
