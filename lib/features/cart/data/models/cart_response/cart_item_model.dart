@@ -1,5 +1,5 @@
 import 'package:ecommerce_app/features/cart/data/models/cart_response/cart_product_model.dart';
-import 'package:ecommerce_app/features/cart/domain/entities/cart_item.dart';
+import 'package:ecommerce_app/features/cart/domain/entities/cart_item_data.dart';
 
 class CartItemModel extends CartItemData {
   const CartItemModel({

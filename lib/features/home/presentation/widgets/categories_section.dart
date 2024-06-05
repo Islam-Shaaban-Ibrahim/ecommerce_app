@@ -3,6 +3,7 @@ import 'package:ecommerce_app/core/widgets/error_indicator.dart';
 import 'package:ecommerce_app/core/widgets/loading_indicator.dart';
 import 'package:ecommerce_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:ecommerce_app/features/home/presentation/cubit/home_states.dart';
+import 'package:ecommerce_app/features/home/presentation/screens/home_screen.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,23 +17,21 @@ class CategorySection extends StatefulWidget {
 }
 
 class _CategorySectionState extends State<CategorySection> {
-  final homeCubit = serviceLocator.get<HomeCubit>()..getCategories();
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 280.h,
       child: BlocBuilder(
-        bloc: homeCubit,
+        bloc: HomeScreen.homeCubitCategories,
         builder: (context, state) {
-          if (state is GetCategoriesLoading) {
-            return const LoadingIndicator();
-          } else if (state is GetCategoriesError) {
+          if (state is GetCategoriesError) {
             return ErrorIndicator(
                 message: state.error,
                 onPressed: () {
-                  homeCubit.getCategories();
+                  HomeScreen.homeCubitCategories.getCategories();
                 });
+          } else if (state is GetCategoriesLoading) {
+            return const LoadingIndicator();
           } else if (state is GetCategoriesSuccess) {
             return GridView.builder(
               scrollDirection: Axis.horizontal,
@@ -43,9 +42,9 @@ class _CategorySectionState extends State<CategorySection> {
                 mainAxisExtent: 100.h,
               ),
               itemBuilder: (context, index) => CategoryItem(
-                category: state.categories[index],
+                category: HomeScreen.homeCubitCategories.categories[index],
               ),
-              itemCount: state.categories.length,
+              itemCount: HomeScreen.homeCubitCategories.categories.length,
             );
           } else {
             return const SizedBox();

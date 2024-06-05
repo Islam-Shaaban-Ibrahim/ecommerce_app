@@ -21,9 +21,13 @@ class CartRepositoryImp implements CartRepository {
   }
 
   @override
-  Future<Either<Failure, void>> addToCart(String productId) {
-    // TODO: implement addToCart
-    throw UnimplementedError();
+  Future<Either<Failure, void>> addToCart(String productId) async {
+    try {
+      await _remoteDataSource.addToCart(productId);
+      return const Right(null);
+    } on RemoteException catch (exception) {
+      return Left(Failure(exception.errorMessage));
+    }
   }
 
   @override

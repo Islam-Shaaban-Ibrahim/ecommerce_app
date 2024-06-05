@@ -25,24 +25,25 @@ import '../../features/auth/data/repository/auth_repository_impl.dart' as _i22;
 import '../../features/auth/domain/repository/auth_repository.dart' as _i21;
 import '../../features/auth/domain/use_cases/login.dart' as _i23;
 import '../../features/auth/domain/use_cases/register.dart' as _i24;
-import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i25;
+import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i26;
 import '../../features/cart/data/data%20source/cart_api_remote_data_source.dart'
     as _i6;
 import '../../features/cart/data/data%20source/cart_remote_data_source.dart'
     as _i5;
 import '../../features/cart/data/repository/cart_repository_impl.dart' as _i20;
 import '../../features/cart/domain/repository/cart_repository.dart' as _i19;
-import '../../features/cart/domain/use_cases/get_cart.dart' as _i29;
-import '../../features/cart/presentation/cubit/cart_cubit.dart' as _i32;
+import '../../features/cart/domain/use_cases/add_to_cart.dart' as _i25;
+import '../../features/cart/domain/use_cases/get_cart.dart' as _i30;
+import '../../features/cart/presentation/cubit/cart_cubit.dart' as _i33;
 import '../../features/home/data/data_source/home_api_remote_data_source.dart'
     as _i12;
 import '../../features/home/data/data_source/home_remote_data_source.dart'
     as _i11;
 import '../../features/home/data/repository/home_repository_impl.dart' as _i16;
 import '../../features/home/domain/repository/home_repository.dart' as _i15;
-import '../../features/home/domain/use_cases/get_brands.dart' as _i26;
-import '../../features/home/domain/use_cases/get_categories.dart' as _i27;
-import '../../features/home/presentation/cubit/home_cubit.dart' as _i30;
+import '../../features/home/domain/use_cases/get_brands.dart' as _i27;
+import '../../features/home/domain/use_cases/get_categories.dart' as _i28;
+import '../../features/home/presentation/cubit/home_cubit.dart' as _i31;
 import '../../features/products/data/data_source/products_api_remote_data_source.dart'
     as _i14;
 import '../../features/products/data/data_source/products_remote_data_source.dart'
@@ -51,9 +52,9 @@ import '../../features/products/data/repository/products_repository_impl.dart'
     as _i18;
 import '../../features/products/domain/repository/products_repository.dart'
     as _i17;
-import '../../features/products/domain/use_cases/get_products.dart' as _i28;
-import '../../features/products/presentation/cubit/products_cubit.dart' as _i31;
-import 'register_module.dart' as _i33;
+import '../../features/products/domain/use_cases/get_products.dart' as _i29;
+import '../../features/products/presentation/cubit/products_cubit.dart' as _i32;
+import 'register_module.dart' as _i34;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -94,26 +95,31 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.singleton<_i23.Login>(() => _i23.Login(gh<_i21.AuthRepository>()));
     gh.singleton<_i24.Register>(() => _i24.Register(gh<_i21.AuthRepository>()));
-    gh.singleton<_i25.AuthCubit>(() => _i25.AuthCubit(
+    gh.singleton<_i25.AddToCart>(
+        () => _i25.AddToCart(gh<_i19.CartRepository>()));
+    gh.singleton<_i26.AuthCubit>(() => _i26.AuthCubit(
           gh<_i23.Login>(),
           gh<_i24.Register>(),
         ));
-    gh.singleton<_i26.GetBrands>(
-        () => _i26.GetBrands(gh<_i15.HomeRepository>()));
-    gh.singleton<_i27.GetCategories>(
-        () => _i27.GetCategories(gh<_i15.HomeRepository>()));
-    gh.singleton<_i28.GetProducts>(
-        () => _i28.GetProducts(gh<_i17.ProductsRepository>()));
-    gh.singleton<_i29.GetCart>(() => _i29.GetCart(gh<_i19.CartRepository>()));
-    gh.factory<_i30.HomeCubit>(() => _i30.HomeCubit(
-          gh<_i26.GetBrands>(),
-          gh<_i27.GetCategories>(),
+    gh.singleton<_i27.GetBrands>(
+        () => _i27.GetBrands(gh<_i15.HomeRepository>()));
+    gh.singleton<_i28.GetCategories>(
+        () => _i28.GetCategories(gh<_i15.HomeRepository>()));
+    gh.singleton<_i29.GetProducts>(
+        () => _i29.GetProducts(gh<_i17.ProductsRepository>()));
+    gh.singleton<_i30.GetCart>(() => _i30.GetCart(gh<_i19.CartRepository>()));
+    gh.factory<_i31.HomeCubit>(() => _i31.HomeCubit(
+          gh<_i27.GetBrands>(),
+          gh<_i28.GetCategories>(),
         ));
-    gh.singleton<_i31.ProductsCubit>(
-        () => _i31.ProductsCubit(gh<_i28.GetProducts>()));
-    gh.singleton<_i32.CartCubit>(() => _i32.CartCubit(gh<_i29.GetCart>()));
+    gh.singleton<_i32.ProductsCubit>(
+        () => _i32.ProductsCubit(gh<_i29.GetProducts>()));
+    gh.factory<_i33.CartCubit>(() => _i33.CartCubit(
+          gh<_i30.GetCart>(),
+          gh<_i25.AddToCart>(),
+        ));
     return this;
   }
 }
 
-class _$RegisterModule extends _i33.RegisterModule {}
+class _$RegisterModule extends _i34.RegisterModule {}

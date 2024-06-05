@@ -1,10 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
+import 'package:ecommerce_app/core/utils/ui_utils.dart';
 import 'package:ecommerce_app/core/widgets/loading_indicator.dart';
+import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:ecommerce_app/features/cart/presentation/cubit/cart_states.dart';
 import 'package:ecommerce_app/features/cart/presentation/screens/cart_screen.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readmore/readmore.dart';
 
@@ -25,6 +30,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     fontSize: 16.sp,
     fontWeight: FontWeight.w500,
   );
+  final cartCubit = serviceLocator.get<CartCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +87,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       itemCount: product.images.length,
                       itemBuilder: (context, index, realIndex) =>
                           CachedNetworkImage(
+                        errorWidget: (context, url, error) =>
+                            Icon(size: 50.sp, Icons.error_outline_outlined),
                         placeholder: (context, url) => const LoadingIndicator(),
                         imageUrl: product.images[index],
                         width: double.infinity,
@@ -271,31 +279,54 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    child: Container(
-                      width: 265.w,
-                      height: 48.h,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: ColorsManager.primaryColor),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ImageIcon(
-                            const AssetImage(
-                              'assets/images/cartIcon2.png',
+                  BlocListener<CartCubit, CartState>(
+                    bloc: cartCubit,
+                    listener: (context, state) {
+                      if (state is AddToCartLoading) {
+                        UIUtils.showLoading(
+                            isDismissible: false,
+                            context: context,
+                            actionName: "Loading...");
+                      } else if (state is AddToCartError) {
+                        UIUtils.hideLoading(context: context);
+                        UIUtils.showMessage(
+                            isDismissible: false,
+                            context: context,
+                            message: state.message,
+                            negAction: 'Cancel');
+                      } else {
+                        UIUtils.hideLoading(context: context);
+                      }
+                    },
+                    child: GestureDetector(
+                      onTap: () {
+                        cartCubit.addToCart(product.id);
+                      },
+                      child: Container(
+                        width: 265.w,
+                        height: 48.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: ColorsManager.primaryColor),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ImageIcon(
+                              const AssetImage(
+                                'assets/images/cartIcon2.png',
+                              ),
+                              size: 24.sp,
+                              color: ColorsManager.whiteColor,
                             ),
-                            size: 24.sp,
-                            color: ColorsManager.whiteColor,
-                          ),
-                          Text(
-                            'Add to cart',
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
+                            Text(
+                              'Add to cart',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

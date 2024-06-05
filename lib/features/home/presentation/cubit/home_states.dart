@@ -7,10 +7,7 @@ class HomeInitial extends HomeState {}
 
 class GetCategoriesLoading extends HomeState {}
 
-class GetCategoriesSuccess extends HomeState {
-  final List<Category> categories;
-  GetCategoriesSuccess(this.categories);
-}
+class GetCategoriesSuccess extends HomeState {}
 
 class GetCategoriesError extends HomeState {
   final String error;
@@ -19,10 +16,7 @@ class GetCategoriesError extends HomeState {
 
 class GetBrandsLoading extends HomeState {}
 
-class GetBrandsSuccess extends HomeState {
-  final List<Brand> brands;
-  GetBrandsSuccess(this.brands);
-}
+class GetBrandsSuccess extends HomeState {}
 
 class GetBrandsError extends HomeState {
   final String error;

@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/core/bloc_observer.dart';
 import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/splash_screen.dart';
 import 'package:ecommerce_app/core/theming/app_theme.dart';
@@ -8,11 +9,13 @@ import 'package:ecommerce_app/features/cart/presentation/screens/cart_screen.dar
 import 'package:ecommerce_app/features/home/presentation/screens/home_screen.dart';
 import 'package:ecommerce_app/features/products/presentation/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
+  Bloc.observer = MyBlocObserver();
   await configureDependencies();
   runApp(const ECommerceApp());
 }

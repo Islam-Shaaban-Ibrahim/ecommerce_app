@@ -18,8 +18,7 @@ abstract class RegisterModule {
         onRequest: (options, handler) async {
           final sharedPref = await SharedPreferences.getInstance();
           final token = sharedPref.get(CacheConstants.tokenKey);
-          options.headers[APIConstants.tokenKey] = {token};
-
+          options.headers[APIConstants.tokenKey] = token;
           return handler.next(options);
         },
       ),

@@ -1,13 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
+import 'package:ecommerce_app/core/utils/ui_utils.dart';
+import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:ecommerce_app/features/cart/presentation/cubit/cart_states.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({super.key, required this.product});
+  ProductItem({super.key, required this.product});
   final Product product;
-
+  final cartCubit = serviceLocator.get<CartCubit>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,6 +36,8 @@ class ProductItem extends StatelessWidget {
                 alignment: AlignmentDirectional.topEnd,
                 children: [
                   CachedNetworkImage(
+                    errorWidget: (context, url, error) =>
+                        Icon(size: 50.sp, Icons.error_outline_outlined),
                     width: double.infinity,
                     height: 128.h,
                     fit: BoxFit.cover,
@@ -101,11 +108,34 @@ class ProductItem extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
                     const Spacer(),
-                    GestureDetector(
-                      child: Icon(
-                        size: 30.sp,
-                        Icons.add_circle,
-                        color: ColorsManager.primaryColor,
+                    BlocListener<CartCubit, CartState>(
+                      bloc: cartCubit,
+                      listener: (context, state) {
+                        if (state is AddToCartLoading) {
+                          UIUtils.showLoading(
+                              isDismissible: false,
+                              context: context,
+                              actionName: "Loading...");
+                        } else if (state is AddToCartError) {
+                          UIUtils.hideLoading(context: context);
+                          UIUtils.showMessage(
+                              isDismissible: false,
+                              context: context,
+                              message: state.message,
+                              negAction: 'Cancel');
+                        } else {
+                          UIUtils.hideLoading(context: context);
+                        }
+                      },
+                      child: GestureDetector(
+                        onTap: () {
+                          cartCubit.addToCart(product.id);
+                        },
+                        child: Icon(
+                          size: 30.sp,
+                          Icons.add_circle,
+                          color: ColorsManager.primaryColor,
+                        ),
                       ),
                     ),
                   ],

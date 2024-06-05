@@ -15,3 +15,12 @@ class GetCartError extends CartState {
 }
 
 class GetCartLoading extends CartState {}
+
+class AddToCartLoading extends CartState {}
+
+class AddToCartSuccess extends CartState {}
+
+class AddToCartError extends CartState {
+  final String message;
+  AddToCartError(this.message);
+}

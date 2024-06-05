@@ -19,7 +19,7 @@ class ProductsTab extends StatefulWidget {
 }
 
 class _ProductsTabState extends State<ProductsTab> {
-  final productsCubit = serviceLocator.get<ProductsCubit>()..getProducts();
+  final productsCubit = serviceLocator.get<ProductsCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,15 +63,15 @@ class _ProductsTabState extends State<ProductsTab> {
                       itemBuilder: (_, index) => GestureDetector(
                         onTap: () {
                           Navigator.of(context).pushNamed(
-                            arguments: state.products[index],
+                            arguments: productsCubit.products[index],
                             ProductDetailsScreen.routeName,
                           );
                         },
                         child: ProductItem(
-                          product: state.products[index],
+                          product: productsCubit.products[index],
                         ),
                       ),
-                      itemCount: state.products.length,
+                      itemCount: productsCubit.products.length,
                     );
                   } else {
                     return const SizedBox();

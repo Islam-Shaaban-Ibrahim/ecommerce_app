@@ -23,9 +23,14 @@ class CartApiRemoteDataSource implements CartRemoteDataSource {
   }
 
   @override
-  Future addToCart(String productId) {
-    // TODO: implement addToCart
-    throw UnimplementedError();
+  Future<void> addToCart(String productId) async {
+    try {
+      await _dio
+          .post(APIConstants.cartEndPoint, data: {"productId": productId});
+    } catch (e) {
+      print(e);
+      throw RemoteException('Failed To Add Product');
+    }
   }
 
   @override
