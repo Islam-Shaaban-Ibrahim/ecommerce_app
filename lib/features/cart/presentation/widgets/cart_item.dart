@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:ecommerce_app/features/cart/domain/entities/cart_item_data.dart';
+import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartItem extends StatelessWidget {
   final CartItemData cartItem;
-  const CartItem({super.key, required this.cartItem});
+  final CartCubit cartCubit;
+  const CartItem({super.key, required this.cartItem, required this.cartCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,9 @@ class CartItem extends StatelessWidget {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              cartCubit.removeFromCart(cartItem.product.id);
+                            },
                             child: ImageIcon(
                               size: 20.sp,
                               const AssetImage('assets/images/deleteIcon.png'),
@@ -115,7 +119,13 @@ class CartItem extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      if (cartItem.count > 1) {
+                                        cartCubit.updateCart(
+                                            cartItem.product.id,
+                                            cartItem.count - 1);
+                                      }
+                                    },
                                     child: Icon(
                                       Icons.remove_circle_outline,
                                       color: ColorsManager.whiteColor,
@@ -134,7 +144,10 @@ class CartItem extends StatelessWidget {
                                         ),
                                   ),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      cartCubit.updateCart(cartItem.product.id,
+                                          cartItem.count + 1);
+                                    },
                                     child: Icon(
                                       Icons.add_circle_outline,
                                       color: ColorsManager.whiteColor,

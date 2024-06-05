@@ -31,14 +31,22 @@ class CartRepositoryImp implements CartRepository {
   }
 
   @override
-  Future<Either<Failure, void>> removeFromCart(String productId) {
-    // TODO: implement removeFromCart
-    throw UnimplementedError();
+  Future<Either<Failure, Cart>> updateCart(String productId, int count) async {
+    try {
+      final response = await _remoteDataSource.updateCart(productId, count);
+      return Right(response.data);
+    } on RemoteException catch (exception) {
+      return Left(Failure(exception.errorMessage));
+    }
   }
 
   @override
-  Future<Either<Failure, void>> updateCart(String productId, int count) {
-    // TODO: implement updateCart
-    throw UnimplementedError();
+  Future<Either<Failure, Cart>> removeFromCart(String productId) async {
+    try {
+      final response = await _remoteDataSource.removeFromCart(productId);
+      return Right(response.data);
+    } on RemoteException catch (exception) {
+      return Left(Failure(exception.errorMessage));
+    }
   }
 }

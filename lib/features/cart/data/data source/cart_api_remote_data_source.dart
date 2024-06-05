@@ -28,20 +28,30 @@ class CartApiRemoteDataSource implements CartRemoteDataSource {
       await _dio
           .post(APIConstants.cartEndPoint, data: {"productId": productId});
     } catch (e) {
-      print(e);
       throw RemoteException('Failed To Add Product');
     }
   }
 
   @override
-  Future deleteFromCart(String productId) {
-    // TODO: implement deleteFromCart
-    throw UnimplementedError();
+  Future<CartResponse> updateCart(String productId, int count) async {
+    try {
+      final response = await _dio.put('${APIConstants.cartEndPoint}/$productId',
+          data: {"count": count});
+      return CartResponse.fromJson(response.data);
+    } catch (_) {
+      throw RemoteException('Failed To Update Cart');
+    }
   }
 
   @override
-  Future updateCart(String productId, int count) {
-    // TODO: implement updateCart
-    throw UnimplementedError();
+  Future<CartResponse> removeFromCart(String productId) async {
+    try {
+      final response = await _dio.delete(
+        "${APIConstants.cartEndPoint}/$productId",
+      );
+      return CartResponse.fromJson(response.data);
+    } catch (_) {
+      throw RemoteException("Failed To Delete Item");
+    }
   }
 }
