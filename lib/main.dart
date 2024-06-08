@@ -2,7 +2,6 @@ import 'package:ecommerce_app/core/bloc_observer.dart';
 import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/splash_screen.dart';
 import 'package:ecommerce_app/core/theming/app_theme.dart';
-import 'package:ecommerce_app/features/auth/domain/use_cases/login.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:ecommerce_app/features/cart/presentation/screens/cart_screen.dart';

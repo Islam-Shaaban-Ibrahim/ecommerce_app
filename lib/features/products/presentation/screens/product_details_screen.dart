@@ -282,25 +282,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   BlocListener<CartCubit, CartState>(
                     bloc: cartCubit,
                     listener: (context, state) {
-                      if (state is AddToCartLoading) {
+                      if (state is AddAndUpdateCartLoading) {
                         UIUtils.showLoading(
                             isDismissible: false,
                             context: context,
                             actionName: "Loading...");
-                      } else if (state is AddToCartError) {
+                      } else if (state is AddAndUpdateCartError) {
                         UIUtils.hideLoading(context: context);
                         UIUtils.showMessage(
                             isDismissible: false,
                             context: context,
                             message: state.message,
                             negAction: 'Cancel');
-                      } else {
+                      } else if (state is AddAndUpdateCartSuccess) {
                         UIUtils.hideLoading(context: context);
                       }
                     },
                     child: GestureDetector(
-                      onTap: () {
-                        cartCubit.addToCart(product.id);
+                      onTap: () async {
+                        cartCubit.addAndUpdateCart(product.id, productQuantity);
                       },
                       child: Container(
                         width: 265.w,

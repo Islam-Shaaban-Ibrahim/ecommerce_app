@@ -22,6 +22,14 @@ class _ProductsTabState extends State<ProductsTab> {
   final productsCubit = serviceLocator.get<ProductsCubit>();
 
   @override
+  void initState() {
+    super.initState();
+    if (productsCubit.products.isEmpty) {
+      productsCubit.getProducts();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),

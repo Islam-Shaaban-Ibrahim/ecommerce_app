@@ -120,7 +120,7 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i26.UpdateCart>(),
           gh<_i27.RemoveFromCart>(),
         ));
-    gh.factory<_i34.HomeCubit>(() => _i34.HomeCubit(
+    gh.singleton<_i34.HomeCubit>(() => _i34.HomeCubit(
           gh<_i29.GetBrands>(),
           gh<_i30.GetCategories>(),
         ));

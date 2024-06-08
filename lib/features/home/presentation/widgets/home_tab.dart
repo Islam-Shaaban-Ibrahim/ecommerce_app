@@ -32,55 +32,25 @@ class HomeTab extends StatelessWidget {
             const SearchBarWithCart(),
             SizedBox(height: 16.h),
             const AnnouncementSection(),
-            SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Categories',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 18.sp,
-                      color: ColorsManager.darkBlueColor,
-                      fontWeight: FontWeight.w700),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'View All',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 16.sp,
-                        color: ColorsManager.darkBlueColor,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ],
+            SizedBox(height: 20.h),
+            Text(
+              'Categories',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontSize: 18.sp,
+                  color: ColorsManager.darkBlueColor,
+                  fontWeight: FontWeight.w700),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 20.h),
             const CategorySection(),
-            SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Brands',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 18.sp,
-                      color: ColorsManager.darkBlueColor,
-                      fontWeight: FontWeight.w700),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'View All',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 16.sp,
-                        color: ColorsManager.darkBlueColor,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ],
+            SizedBox(height: 20.h),
+            Text(
+              'Brands',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontSize: 18.sp,
+                  color: ColorsManager.darkBlueColor,
+                  fontWeight: FontWeight.w700),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 20.h),
             const BrandSection(),
             SizedBox(height: 30.h),
           ],

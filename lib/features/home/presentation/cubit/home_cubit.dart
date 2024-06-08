@@ -6,7 +6,7 @@ import 'package:ecommerce_app/features/home/presentation/cubit/home_states.dart'
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-@injectable
+@singleton
 class HomeCubit extends Cubit<HomeState> {
   final GetCategories _getCategories;
   final GetBrands _getBrands;
@@ -22,7 +22,6 @@ class HomeCubit extends Cubit<HomeState> {
       (failure) => emit(GetCategoriesError(failure.errorMessage)),
       (list) {
         categories = list;
-
         emit(GetCategoriesSuccess());
       },
     );

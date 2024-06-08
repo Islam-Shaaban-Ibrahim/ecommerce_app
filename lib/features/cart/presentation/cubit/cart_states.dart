@@ -37,3 +37,12 @@ class RemoveFromCartError extends CartState {
   final String message;
   RemoveFromCartError(this.message);
 }
+
+class AddAndUpdateCartLoading extends CartState {}
+
+class AddAndUpdateCartSuccess extends CartState {}
+
+class AddAndUpdateCartError extends CartState {
+  final String message;
+  AddAndUpdateCartError(this.message);
+}

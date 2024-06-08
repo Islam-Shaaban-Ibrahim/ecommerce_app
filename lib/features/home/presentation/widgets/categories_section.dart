@@ -3,7 +3,6 @@ import 'package:ecommerce_app/core/widgets/error_indicator.dart';
 import 'package:ecommerce_app/core/widgets/loading_indicator.dart';
 import 'package:ecommerce_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:ecommerce_app/features/home/presentation/cubit/home_states.dart';
-import 'package:ecommerce_app/features/home/presentation/screens/home_screen.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,22 +16,27 @@ class CategorySection extends StatefulWidget {
 }
 
 class _CategorySectionState extends State<CategorySection> {
+  final homeCubit = serviceLocator.get<HomeCubit>();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 280.h,
-      child: BlocBuilder(
-        bloc: HomeScreen.homeCubitCategories,
+      child: BlocBuilder<HomeCubit, HomeState>(
+        bloc: homeCubit,
+        buildWhen: (_, current) =>
+            current is GetCategoriesLoading ||
+            current is GetCategoriesError ||
+            current is GetCategoriesSuccess,
         builder: (context, state) {
           if (state is GetCategoriesError) {
             return ErrorIndicator(
                 message: state.error,
                 onPressed: () {
-                  HomeScreen.homeCubitCategories.getCategories();
+                  homeCubit.getCategories();
                 });
           } else if (state is GetCategoriesLoading) {
             return const LoadingIndicator();
-          } else if (state is GetCategoriesSuccess) {
+          } else {
             return GridView.builder(
               scrollDirection: Axis.horizontal,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -42,12 +46,10 @@ class _CategorySectionState extends State<CategorySection> {
                 mainAxisExtent: 100.h,
               ),
               itemBuilder: (context, index) => CategoryItem(
-                category: HomeScreen.homeCubitCategories.categories[index],
+                category: homeCubit.categories[index],
               ),
-              itemCount: HomeScreen.homeCubitCategories.categories.length,
+              itemCount: homeCubit.categories.length,
             );
-          } else {
-            return const SizedBox();
           }
         },
       ),

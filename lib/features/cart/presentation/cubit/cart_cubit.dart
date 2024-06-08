@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/core/error/failure.dart';
 import 'package:ecommerce_app/features/cart/domain/entities/cart.dart';
 import 'package:ecommerce_app/features/cart/domain/use_cases/add_to_cart.dart';
 import 'package:ecommerce_app/features/cart/domain/use_cases/get_cart.dart';
@@ -73,5 +72,21 @@ class CartCubit extends Cubit<CartState> {
         emit(RemoveFromCartSuccess());
       },
     );
+  }
+
+  Future<void> addAndUpdateCart(String productId, int count) async {
+    emit(AddAndUpdateCartLoading());
+    final result = await _addToCart(productId);
+    result.fold((failure) => emit(AddAndUpdateCartError(failure.errorMessage)),
+        (success) async {
+      final updateResult = await _updateCart(productId, count);
+      updateResult.fold(
+        (failure) {},
+        (cartResponse) {
+          cart = cartResponse;
+          emit(AddAndUpdateCartSuccess());
+        },
+      );
+    });
   }
 }

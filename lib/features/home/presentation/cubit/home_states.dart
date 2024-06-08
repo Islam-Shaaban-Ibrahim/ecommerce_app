@@ -1,6 +1,3 @@
-import 'package:ecommerce_app/features/home/domain/entities/brand.dart';
-import 'package:ecommerce_app/features/home/domain/entities/category.dart';
-
 abstract class HomeState {}
 
 class HomeInitial extends HomeState {}

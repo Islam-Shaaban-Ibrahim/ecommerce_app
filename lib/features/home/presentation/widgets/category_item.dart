@@ -15,6 +15,8 @@ class CategoryItem extends StatelessWidget {
         Expanded(
           flex: 8,
           child: CircleAvatar(
+            onBackgroundImageError: (exception, stackTrace) =>
+                Icon(size: 50.sp, Icons.error_outline_outlined),
             radius: 50.r,
             backgroundImage: CachedNetworkImageProvider(
               category.image,
