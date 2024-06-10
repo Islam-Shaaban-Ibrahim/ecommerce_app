@@ -10,3 +10,21 @@ class GetWishlistError extends WishlistState {
 }
 
 class GetWishlistSuccess extends WishlistState {}
+
+class AddToWishlistLoading extends WishlistState {}
+
+class AddToWishlistError extends WishlistState {
+  final String message;
+  AddToWishlistError(this.message);
+}
+
+class AddToWishlistSuccess extends WishlistState {}
+
+class RemoveFromWishlistLoading extends WishlistState {}
+
+class RemoveFromWishlistError extends WishlistState {
+  final String message;
+  RemoveFromWishlistError(this.message);
+}
+
+class RemoveFromWishlistSuccess extends WishlistState {}

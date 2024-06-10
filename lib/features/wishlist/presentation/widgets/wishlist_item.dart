@@ -1,16 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
+import 'package:ecommerce_app/core/utils/ui_utils.dart';
+import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:ecommerce_app/features/cart/presentation/cubit/cart_states.dart';
+import 'package:ecommerce_app/features/products/presentation/widgets/products_tab.dart';
 import 'package:ecommerce_app/features/wishlist/domain/entities/wishlist_item_data.dart';
+import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WishlistItem extends StatelessWidget {
   final WishlistItemData wishlistItemData;
-  const WishlistItem({
+  final WishlistCubit wishlistCubit;
+  WishlistItem({
     super.key,
     required this.wishlistItemData,
+    required this.wishlistCubit,
   });
-
+  final cartCubit = serviceLocator.get<CartCubit>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -76,11 +85,7 @@ class WishlistItem extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {},
-                            child:
-                                Image.asset('assets/images/wishIconFilled.png'),
-                          ),
+                          Image.asset('assets/images/wishIconFilled.png'),
                         ],
                       ),
                       Row(
@@ -98,19 +103,54 @@ class WishlistItem extends StatelessWidget {
                                   fontWeight: FontWeight.w600,
                                 ),
                           ),
-                          Container(
-                            width: 100.w,
-                            height: 38.h,
-                            decoration: BoxDecoration(
-                              color: ColorsManager.primaryColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Add To Cart',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
+                          BlocListener<CartCubit, CartState>(
+                            bloc: cartCubit,
+                            listener: (context, state) {
+                              if (state is AddToCartLoading) {
+                                UIUtils.showLoading(
+                                    isDismissible: false,
+                                    context: context,
+                                    actionName: "Loading...");
+                              } else if (state is AddToCartError) {
+                                UIUtils.hideLoading(context: context);
+                                UIUtils.showMessage(
+                                    isDismissible: false,
+                                    context: context,
+                                    message: state.message,
+                                    negAction: 'Cancel');
+                              } else if (state is AddToCartSuccess) {
+                                wishlistCubit.wishlist.removeWhere(
+                                  (element) =>
+                                      element.id == wishlistItemData.id,
+                                );
+                                wishlistCubit
+                                    .removeFromWishlist(wishlistItemData.id);
+
+                                ProductsTab.productsIds
+                                    .remove(wishlistItemData.id);
+
+                                UIUtils.hideLoading(context: context);
+                              }
+                            },
+                            child: GestureDetector(
+                              onTap: () async {
+                                await cartCubit.addToCart(wishlistItemData.id);
+                              },
+                              child: Container(
+                                width: 100.w,
+                                height: 38.h,
+                                decoration: BoxDecoration(
+                                  color: ColorsManager.primaryColor,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Add To Cart',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

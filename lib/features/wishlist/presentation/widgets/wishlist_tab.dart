@@ -5,9 +5,8 @@ import 'package:ecommerce_app/core/widgets/loading_indicator.dart';
 import 'package:ecommerce_app/core/widgets/search_bar_with_cart.dart';
 import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_cubit.dart';
 import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_sates.dart';
-import 'package:ecommerce_app/features/wishlist/presentation/widgets/wish_list_item.dart';
+import 'package:ecommerce_app/features/wishlist/presentation/widgets/wishlist_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -41,7 +40,12 @@ class WishlistTab extends StatelessWidget {
                 if (state is GetWishlistLoading) {
                   return const LoadingIndicator();
                 } else if (state is GetWishlistError) {
-                  return ErrorIndicator(message: state.message);
+                  return ErrorIndicator(
+                    message: state.message,
+                    onPressed: () {
+                      wishlistCubit.getWishlist();
+                    },
+                  );
                 } else {
                   return wishlistCubit.wishlist.isEmpty
                       ? Center(
@@ -57,6 +61,7 @@ class WishlistTab extends StatelessWidget {
                         )
                       : ListView.builder(
                           itemBuilder: (_, index) => WishlistItem(
+                            wishlistCubit: wishlistCubit,
                             wishlistItemData: wishlistCubit.wishlist[index],
                           ),
                           itemCount: wishlistCubit.wishlist.length,

@@ -5,14 +5,28 @@ import 'package:ecommerce_app/core/utils/ui_utils.dart';
 import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:ecommerce_app/features/cart/presentation/cubit/cart_states.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
+import 'package:ecommerce_app/features/products/presentation/widgets/products_tab.dart';
+import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_cubit.dart';
+import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_sates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProductItem extends StatelessWidget {
-  ProductItem({super.key, required this.product});
+// ignore: must_be_immutable
+class ProductItem extends StatefulWidget {
+  ProductItem({super.key, required this.product, required this.isAdded});
+  bool isAdded;
   final Product product;
+
+  @override
+  State<ProductItem> createState() => _ProductItemState();
+}
+
+class _ProductItemState extends State<ProductItem> {
   final cartCubit = serviceLocator.get<CartCubit>();
+
+  final wishlistCubit = serviceLocator.get<WishlistCubit>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,16 +55,62 @@ class ProductItem extends StatelessWidget {
                     width: double.infinity,
                     height: 128.h,
                     fit: BoxFit.cover,
-                    imageUrl: product.imageCover,
+                    imageUrl: widget.product.imageCover,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Image.asset(
-                      'assets/images/wishlistSign.png',
-                      filterQuality: FilterQuality.high,
-                      width: 50.w,
-                      height: 50.h,
-                      fit: BoxFit.cover,
+                  BlocListener<WishlistCubit, WishlistState>(
+                    bloc: wishlistCubit,
+                    listener: (context, state) {
+                      if (state is AddToWishlistLoading ||
+                          state is RemoveFromWishlistLoading) {
+                        UIUtils.showLoading(
+                            isDismissible: false,
+                            context: context,
+                            actionName: "Loading...");
+                      } else if (state is AddToWishlistError) {
+                        UIUtils.hideLoading(context: context);
+                        UIUtils.showMessage(
+                            isDismissible: false,
+                            context: context,
+                            message: state.message,
+                            negAction: 'Cancel');
+                      } else if (state is RemoveFromWishlistError) {
+                        UIUtils.hideLoading(context: context);
+                        UIUtils.showMessage(
+                            isDismissible: false,
+                            context: context,
+                            message: state.message,
+                            negAction: 'Cancel');
+                      } else if (state is AddToWishlistSuccess ||
+                          state is RemoveFromWishlistSuccess) {
+                        if (state is AddToWishlistSuccess) {
+                          widget.isAdded = true;
+                          ProductsTab.productsIds.add(widget.product.id);
+                        } else {
+                          ProductsTab.productsIds.remove(widget.product.id);
+                          widget.isAdded = false;
+                        }
+                        setState(() {});
+                        UIUtils.hideLoading(context: context);
+                      }
+                    },
+                    child: GestureDetector(
+                      onTap: () async {
+                        if (!widget.isAdded) {
+                          await wishlistCubit.addToWishlist(widget.product.id);
+                        } else {
+                          await wishlistCubit
+                              .removeFromWishlist(widget.product.id);
+                        }
+                      },
+                      child: Image.asset(
+                        widget.isAdded
+                            ? 'assets/images/wishIconFilled.png'
+                            : 'assets/images/wishlistSign.png',
+                        filterQuality: FilterQuality.high,
+                        width: 50.w,
+                        height: 50.h,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ],
@@ -68,7 +128,7 @@ class ProductItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  product.title,
+                  widget.product.title,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: ColorsManager.darkBlueColor,
                       fontSize: 12.sp,
@@ -80,7 +140,7 @@ class ProductItem extends StatelessWidget {
                   height: 7.h,
                 ),
                 Text(
-                  'EGP ${product.price}',
+                  'EGP ${widget.product.price}',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: ColorsManager.darkBlueColor,
                       fontSize: 12.sp,
@@ -92,7 +152,7 @@ class ProductItem extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Review (${product.ratingsAverage})',
+                      'Review (${widget.product.ratingsAverage})',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           color: ColorsManager.darkBlueColor,
                           fontSize: 12.sp,
@@ -129,7 +189,7 @@ class ProductItem extends StatelessWidget {
                       },
                       child: GestureDetector(
                         onTap: () {
-                          cartCubit.addToCart(product.id);
+                          cartCubit.addToCart(widget.product.id);
                         },
                         child: Icon(
                           size: 30.sp,

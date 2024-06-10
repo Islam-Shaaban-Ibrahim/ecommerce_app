@@ -2,6 +2,6 @@ import 'package:ecommerce_app/features/wishlist/data/models/wishlist_response/wi
 
 abstract class WishlistRemoteDataSource {
   Future<WishlistResponse> getWishlist();
-  Future<WishlistResponse> removeFromWishlist(String productId);
+  Future<void> removeFromWishlist(String productId);
   Future<void> addToWishlist(String productId);
 }

@@ -46,7 +46,7 @@ class UIUtils {
   static showMessage(
       {required BuildContext context,
       bool isDismissible = true,
-      String? title,
+      String title = 'Error',
       String? posAction,
       String? negAction,
       Function? posActionFunction,
@@ -100,7 +100,7 @@ class UIUtils {
             canPop: isDismissible,
             child: AlertDialog(
                 actions: actions,
-                title: Text(title ?? '',
+                title: Text(title,
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge

@@ -21,15 +21,22 @@ class WishlistRepositoryImpl implements WishlistRepository {
   }
 
   @override
-  Future<Either<Failure, void>> addToWishlist(String productId) {
-    // TODO: implement addToWishlist
-    throw UnimplementedError();
+  Future<Either<Failure, void>> addToWishlist(String productId) async {
+    try {
+      await _dataSource.addToWishlist(productId);
+      return const Right(null);
+    } on RemoteException catch (exception) {
+      return Left(Failure(exception.errorMessage));
+    }
   }
 
   @override
-  Future<Either<Failure, List<WishlistItemData>>> removeFromWishlist(
-      String productId) {
-    // TODO: implement removeFromWishlist
-    throw UnimplementedError();
+  Future<Either<Failure, void>> removeFromWishlist(String productId) async {
+    try {
+      await _dataSource.removeFromWishlist(productId);
+      return const Right(null);
+    } on RemoteException catch (exception) {
+      return Left(Failure(exception.errorMessage));
+    }
   }
 }

@@ -4,7 +4,6 @@ import 'package:ecommerce_app/features/wishlist/domain/entities/wishlist_item_da
 
 abstract class WishlistRepository {
   Future<Either<Failure, List<WishlistItemData>>> getWishlist();
-  Future<Either<Failure, List<WishlistItemData>>> removeFromWishlist(
-      String productId);
+  Future<Either<Failure, void>> removeFromWishlist(String productId);
   Future<Either<Failure, void>> addToWishlist(String productId);
 }

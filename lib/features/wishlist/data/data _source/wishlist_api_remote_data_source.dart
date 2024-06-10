@@ -15,20 +15,30 @@ class WishlistApiRemoteDataSource implements WishlistRemoteDataSource {
     try {
       final response = await _dio.get(APIConstants.wishlistEndPoint);
       return WishlistResponse.fromJson(response.data);
-    } catch (_) {
+    } catch (e) {
       throw RemoteException('Failed To Get Wishlist');
     }
   }
 
   @override
-  Future<void> addToWishlist(String productId) {
-    // TODO: implement addToWishlist
-    throw UnimplementedError();
+  Future<void> addToWishlist(String productId) async {
+    try {
+      await _dio.post(APIConstants.wishlistEndPoint, data: {
+        "productId": productId,
+      });
+    } catch (_) {
+      throw RemoteException('Failed To Add Product');
+    }
   }
 
   @override
-  Future<WishlistResponse> removeFromWishlist(String productId) {
-    // TODO: implement removeFromWishlist
-    throw UnimplementedError();
+  Future<void> removeFromWishlist(String productId) async {
+    try {
+      await _dio.delete(
+        "${APIConstants.wishlistEndPoint}/$productId",
+      );
+    } catch (e) {
+      throw RemoteException('Failed To Remove Product');
+    }
   }
 }
