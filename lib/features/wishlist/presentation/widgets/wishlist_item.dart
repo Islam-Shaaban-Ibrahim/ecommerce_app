@@ -1,15 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
-import 'package:ecommerce_app/features/cart/domain/entities/cart_item_data.dart';
+import 'package:ecommerce_app/core/utils/ui_utils.dart';
 import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:ecommerce_app/features/cart/presentation/cubit/cart_states.dart';
+import 'package:ecommerce_app/features/products/presentation/widgets/products_tab.dart';
+import 'package:ecommerce_app/features/wishlist/domain/entities/wishlist_item_data.dart';
+import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CartItem extends StatelessWidget {
-  final CartItemData cartItem;
-  final CartCubit cartCubit;
-  const CartItem({super.key, required this.cartItem, required this.cartCubit});
-
+class WishlistItem extends StatelessWidget {
+  final WishlistItemData wishlistItemData;
+  final WishlistCubit wishlistCubit;
+  WishlistItem({
+    super.key,
+    required this.wishlistItemData,
+    required this.wishlistCubit,
+  });
+  final cartCubit = serviceLocator.get<CartCubit>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,7 +43,7 @@ class CartItem extends StatelessWidget {
                   image: DecorationImage(
                     fit: BoxFit.fill,
                     image: CachedNetworkImageProvider(
-                      cartItem.product.imageCover,
+                      wishlistItemData.imageCover,
                     ),
                   ),
                   borderRadius: BorderRadius.circular(15),
@@ -62,7 +72,7 @@ class CartItem extends StatelessWidget {
                             width: 190.w,
                             child: Text(
                               textWidthBasis: TextWidthBasis.parent,
-                              cartItem.product.title,
+                              wishlistItemData.title,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -75,15 +85,7 @@ class CartItem extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              cartCubit.removeFromCart(cartItem.product.id);
-                            },
-                            child: ImageIcon(
-                              size: 20.sp,
-                              const AssetImage('assets/images/deleteIcon.png'),
-                            ),
-                          ),
+                          Image.asset('assets/images/wishIconFilled.png'),
                         ],
                       ),
                       Row(
@@ -91,7 +93,7 @@ class CartItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'EGP ${cartItem.price}',
+                            'EGP ${wishlistItemData.price}',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -101,60 +103,55 @@ class CartItem extends StatelessWidget {
                                   fontWeight: FontWeight.w600,
                                 ),
                           ),
-                          Container(
-                            width: 122.w,
-                            height: 38.h,
-                            decoration: BoxDecoration(
-                              color: ColorsManager.primaryColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 5.h,
-                                horizontal: 12.w,
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      if (cartItem.count > 1) {
-                                        cartCubit.updateCart(
-                                            cartItem.product.id,
-                                            cartItem.count - 1);
-                                      }
-                                    },
-                                    child: Icon(
-                                      Icons.remove_circle_outline,
-                                      color: ColorsManager.whiteColor,
-                                      size: 25.sp,
+                          BlocListener<CartCubit, CartState>(
+                            bloc: cartCubit,
+                            listener: (context, state) {
+                              if (state is AddToCartLoading) {
+                                UIUtils.showLoading(
+                                    isDismissible: false,
+                                    context: context,
+                                    actionName: "Loading...");
+                              } else if (state is AddToCartError) {
+                                UIUtils.hideLoading(context: context);
+                                UIUtils.showMessage(
+                                    isDismissible: false,
+                                    context: context,
+                                    message: state.message,
+                                    negAction: 'Cancel');
+                              } else if (state is AddToCartSuccess) {
+                                wishlistCubit.wishlist.removeWhere(
+                                  (element) =>
+                                      element.id == wishlistItemData.id,
+                                );
+                                wishlistCubit
+                                    .removeFromWishlist(wishlistItemData.id);
+
+                                ProductsTab.productsIds
+                                    .remove(wishlistItemData.id);
+
+                                UIUtils.hideLoading(context: context);
+                              }
+                            },
+                            child: GestureDetector(
+                              onTap: () async {
+                                await cartCubit.addToCart(wishlistItemData.id);
+                              },
+                              child: Container(
+                                width: 100.w,
+                                height: 38.h,
+                                decoration: BoxDecoration(
+                                  color: ColorsManager.primaryColor,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Add To Cart',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  Text(
-                                    '${cartItem.count}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall
-                                        ?.copyWith(
-                                          color: ColorsManager.whiteColor,
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      cartCubit.updateCart(cartItem.product.id,
-                                          cartItem.count + 1);
-                                    },
-                                    child: Icon(
-                                      Icons.add_circle_outline,
-                                      color: ColorsManager.whiteColor,
-                                      size: 25.sp,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           ),

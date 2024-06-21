@@ -6,6 +6,7 @@ import 'package:ecommerce_app/features/products/presentation/cubit/products_cubi
 import 'package:ecommerce_app/features/products/presentation/cubit/products_states.dart';
 import 'package:ecommerce_app/features/products/presentation/widgets/product_item.dart';
 import 'package:ecommerce_app/features/products/presentation/screens/product_details_screen.dart';
+import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductsTab extends StatefulWidget {
   const ProductsTab({super.key});
+  static List<String> productsIds = [];
 
   @override
   State<ProductsTab> createState() => _ProductsTabState();
@@ -20,12 +22,16 @@ class ProductsTab extends StatefulWidget {
 
 class _ProductsTabState extends State<ProductsTab> {
   final productsCubit = serviceLocator.get<ProductsCubit>();
+  final wishlistCubit = serviceLocator.get<WishlistCubit>();
 
   @override
   void initState() {
     super.initState();
     if (productsCubit.products.isEmpty) {
       productsCubit.getProducts();
+      wishlistCubit.getWishlist().then((value) {
+        ProductsTab.productsIds = wishlistCubit.productIDs;
+      });
     }
   }
 
@@ -59,6 +65,9 @@ class _ProductsTabState extends State<ProductsTab> {
                         message: state.message,
                         onPressed: () {
                           productsCubit.getProducts();
+                          wishlistCubit.getWishlist().then((value) {
+                            ProductsTab.productsIds = wishlistCubit.productIDs;
+                          });
                         });
                   } else if (state is ProductsSuccess) {
                     return GridView.builder(
@@ -76,6 +85,8 @@ class _ProductsTabState extends State<ProductsTab> {
                           );
                         },
                         child: ProductItem(
+                          isAdded: ProductsTab.productsIds
+                              .contains(productsCubit.products[index].id),
                           product: productsCubit.products[index],
                         ),
                       ),
