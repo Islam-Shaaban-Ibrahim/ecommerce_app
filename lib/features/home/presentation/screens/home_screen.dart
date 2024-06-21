@@ -1,8 +1,10 @@
+import 'package:ecommerce_app/core/di/service_locator.dart';
+import 'package:ecommerce_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/home_tab.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/nav_bar_icon.dart';
 import 'package:ecommerce_app/features/products/presentation/widgets/products_tab.dart';
 import 'package:ecommerce_app/features/profile/presentation/widgets/profile_tab.dart';
-import 'package:ecommerce_app/features/wishlist/presentation/screens/widgets/wishlist_tab.dart';
+import 'package:ecommerce_app/features/wishlist/presentation/widgets/wishlist_tab.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,6 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
     WishlistTab(),
     ProfileTab(),
   ];
+  @override
+  void initState() {
+    super.initState();
+    serviceLocator.get<HomeCubit>().getCategories().then(
+          (value) => serviceLocator.get<HomeCubit>().getBrands(),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {

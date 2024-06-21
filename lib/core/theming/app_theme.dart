@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class MyAppTheme {
   static ThemeData mainTheme = ThemeData(
     appBarTheme: const AppBarTheme(
+      scrolledUnderElevation: 0,
       iconTheme: IconThemeData(color: ColorsManager.primaryColor),
       centerTitle: true,
     ),

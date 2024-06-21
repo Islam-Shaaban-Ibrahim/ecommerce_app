@@ -19,6 +19,8 @@ class BrandItem extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border.all(color: ColorsManager.greyColor),
                 image: DecorationImage(
+                  onError: (exception, stackTrace) =>
+                      Icon(size: 50.sp, Icons.error_outline_outlined),
                   image: CachedNetworkImageProvider(brand.image),
                 ),
                 color: Colors.white,

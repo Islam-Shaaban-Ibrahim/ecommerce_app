@@ -16,18 +16,19 @@ class BrandSection extends StatefulWidget {
 }
 
 class _BrandSectionState extends State<BrandSection> {
-  final homeCubit = serviceLocator.get<HomeCubit>()..getBrands();
-
+  final homeCubit = serviceLocator.get<HomeCubit>();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 280.h,
       child: BlocBuilder<HomeCubit, HomeState>(
           bloc: homeCubit,
+          buildWhen: (_, current) =>
+              current is GetBrandsLoading ||
+              current is GetBrandsError ||
+              current is GetBrandsSuccess,
           builder: (context, state) {
-            if (state is GetBrandsLoading) {
-              return const LoadingIndicator();
-            } else if (state is GetBrandsError) {
+            if (state is GetBrandsError) {
               return ErrorIndicator(
                 message: state.error,
                 onPressed: () {
@@ -44,12 +45,12 @@ class _BrandSectionState extends State<BrandSection> {
                   mainAxisExtent: 100.h,
                 ),
                 itemBuilder: (context, index) => BrandItem(
-                  brand: state.brands[index],
+                  brand: homeCubit.brands[index],
                 ),
-                itemCount: state.brands.length,
+                itemCount: homeCubit.brands.length,
               );
             } else {
-              return const SizedBox();
+              return const LoadingIndicator();
             }
           }),
     );

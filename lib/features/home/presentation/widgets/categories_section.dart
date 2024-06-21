@@ -16,24 +16,27 @@ class CategorySection extends StatefulWidget {
 }
 
 class _CategorySectionState extends State<CategorySection> {
-  final homeCubit = serviceLocator.get<HomeCubit>()..getCategories();
-
+  final homeCubit = serviceLocator.get<HomeCubit>();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 280.h,
-      child: BlocBuilder(
+      child: BlocBuilder<HomeCubit, HomeState>(
         bloc: homeCubit,
+        buildWhen: (_, current) =>
+            current is GetCategoriesLoading ||
+            current is GetCategoriesError ||
+            current is GetCategoriesSuccess,
         builder: (context, state) {
-          if (state is GetCategoriesLoading) {
-            return const LoadingIndicator();
-          } else if (state is GetCategoriesError) {
+          if (state is GetCategoriesError) {
             return ErrorIndicator(
                 message: state.error,
                 onPressed: () {
                   homeCubit.getCategories();
                 });
-          } else if (state is GetCategoriesSuccess) {
+          } else if (state is GetCategoriesLoading) {
+            return const LoadingIndicator();
+          } else {
             return GridView.builder(
               scrollDirection: Axis.horizontal,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -43,12 +46,10 @@ class _CategorySectionState extends State<CategorySection> {
                 mainAxisExtent: 100.h,
               ),
               itemBuilder: (context, index) => CategoryItem(
-                category: state.categories[index],
+                category: homeCubit.categories[index],
               ),
-              itemCount: state.categories.length,
+              itemCount: homeCubit.categories.length,
             );
-          } else {
-            return const SizedBox();
           }
         },
       ),

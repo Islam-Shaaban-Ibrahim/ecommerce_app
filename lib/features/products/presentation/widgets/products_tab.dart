@@ -5,7 +5,7 @@ import 'package:ecommerce_app/core/widgets/search_bar_with_cart.dart';
 import 'package:ecommerce_app/features/products/presentation/cubit/products_cubit.dart';
 import 'package:ecommerce_app/features/products/presentation/cubit/products_states.dart';
 import 'package:ecommerce_app/features/products/presentation/widgets/product_item.dart';
-import 'package:ecommerce_app/features/profile/presentation/screens/product_details_screen.dart';
+import 'package:ecommerce_app/features/products/presentation/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +19,15 @@ class ProductsTab extends StatefulWidget {
 }
 
 class _ProductsTabState extends State<ProductsTab> {
-  final productsCubit = serviceLocator.get<ProductsCubit>()..getProducts();
+  final productsCubit = serviceLocator.get<ProductsCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    if (productsCubit.products.isEmpty) {
+      productsCubit.getProducts();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,15 +71,15 @@ class _ProductsTabState extends State<ProductsTab> {
                       itemBuilder: (_, index) => GestureDetector(
                         onTap: () {
                           Navigator.of(context).pushNamed(
-                            arguments: state.products[index],
+                            arguments: productsCubit.products[index],
                             ProductDetailsScreen.routeName,
                           );
                         },
                         child: ProductItem(
-                          product: state.products[index],
+                          product: productsCubit.products[index],
                         ),
                       ),
-                      itemCount: state.products.length,
+                      itemCount: productsCubit.products.length,
                     );
                   } else {
                     return const SizedBox();

@@ -12,7 +12,7 @@ class ProductsApiRemoteDataSource implements ProductsRemoteDataSource {
   @override
   Future<ProductsResponse> getProducts() async {
     try {
-      final response = await _dio.get(APIConstants.products);
+      final response = await _dio.get(APIConstants.productsEndPoint);
       return ProductsResponse.fromJson(response.data);
     } catch (e) {
       throw RemoteException('Failed To GET Products');
