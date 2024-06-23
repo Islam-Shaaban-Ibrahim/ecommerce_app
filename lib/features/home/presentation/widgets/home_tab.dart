@@ -10,6 +10,7 @@ class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(

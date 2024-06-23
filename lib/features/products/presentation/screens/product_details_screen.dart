@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ecommerce_app/core/constants.dart';
 import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:ecommerce_app/core/utils/ui_utils.dart';
 import 'package:ecommerce_app/core/widgets/loading_indicator.dart';
+import 'package:ecommerce_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:ecommerce_app/features/cart/presentation/cubit/cart_states.dart';
 import 'package:ecommerce_app/features/cart/presentation/screens/cart_screen.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readmore/readmore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   static const String routeName = 'productDetails';
@@ -300,7 +303,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     },
                     child: GestureDetector(
                       onTap: () async {
-                        cartCubit.addAndUpdateCart(product.id, productQuantity);
+                        final sharedPref =
+                            await SharedPreferences.getInstance();
+                        if (sharedPref.get(CacheConstants.tokenKey) == null) {
+                          // ignore: use_build_context_synchronously
+                          UIUtils.showLogInMessage(context);
+                        } else {
+                          cartCubit.addAndUpdateCart(
+                              product.id, productQuantity);
+                        }
                       },
                       child: Container(
                         width: 265.w,

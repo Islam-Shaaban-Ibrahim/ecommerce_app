@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:ecommerce_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:ecommerce_app/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void goToHome() {
     Timer(const Duration(seconds: 1), () {
-      Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     });
   }
 }

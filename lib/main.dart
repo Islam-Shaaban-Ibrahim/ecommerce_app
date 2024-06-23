@@ -32,7 +32,7 @@ class ECommerceApp extends StatelessWidget {
         title: 'E-Commerce',
         theme: MyAppTheme.mainTheme,
         debugShowCheckedModeBanner: false,
-        initialRoute: HomeScreen.routeName,
+        initialRoute: SplashScreen.routeName,
         routes: {
           SplashScreen.routeName: (context) => const SplashScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),

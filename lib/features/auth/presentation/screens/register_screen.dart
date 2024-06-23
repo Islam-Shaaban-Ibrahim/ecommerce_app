@@ -164,7 +164,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           actionName: 'Loading...');
                     } else if (state is RegisterSuccess) {
                       UIUtils.hideLoading(context: context);
-                      Navigator.of(context).pushNamed(HomeScreen.routeName);
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          HomeScreen.routeName, (route) => false);
                     } else if (state is RegisterError) {
                       UIUtils.hideLoading(context: context);
                       UIUtils.showMessage(
