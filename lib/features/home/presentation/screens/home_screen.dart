@@ -1,7 +1,6 @@
 import 'package:ecommerce_app/core/constants.dart';
 import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/utils/ui_utils.dart';
-import 'package:ecommerce_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:ecommerce_app/features/home/presentation/cubit/brands/brands_cubit.dart';
 import 'package:ecommerce_app/features/home/presentation/cubit/categories/categories_cubit.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/home_tab.dart';

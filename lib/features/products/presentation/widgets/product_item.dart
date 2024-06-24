@@ -3,7 +3,6 @@ import 'package:ecommerce_app/core/constants.dart';
 import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:ecommerce_app/core/utils/ui_utils.dart';
-import 'package:ecommerce_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:ecommerce_app/features/cart/presentation/cubit/cart_states.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';

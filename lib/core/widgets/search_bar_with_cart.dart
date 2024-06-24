@@ -15,7 +15,7 @@ class SearchBarWithCart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
+        const Expanded(
           child: SearchTextField(),
         ),
         SizedBox(width: 26.w),

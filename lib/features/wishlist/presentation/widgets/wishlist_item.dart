@@ -119,17 +119,17 @@ class WishlistItem extends StatelessWidget {
                                     message: state.message,
                                     negAction: 'Cancel');
                               } else if (state is AddToCartSuccess) {
+                                UIUtils.hideLoading(context: context);
                                 wishlistCubit.wishlist.removeWhere(
                                   (element) =>
                                       element.id == wishlistItemData.id,
                                 );
+
                                 wishlistCubit
                                     .removeFromWishlist(wishlistItemData.id);
 
                                 ProductsTab.productsIds
                                     .remove(wishlistItemData.id);
-
-                                UIUtils.hideLoading(context: context);
                               }
                             },
                             child: GestureDetector(
