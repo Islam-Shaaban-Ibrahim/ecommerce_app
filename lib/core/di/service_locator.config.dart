@@ -36,7 +36,7 @@ import '../../features/cart/domain/use_cases/add_to_cart.dart' as _i32;
 import '../../features/cart/domain/use_cases/get_cart.dart' as _i40;
 import '../../features/cart/domain/use_cases/remove_from_cart.dart' as _i34;
 import '../../features/cart/domain/use_cases/update_cart.dart' as _i33;
-import '../../features/cart/presentation/cubit/cart_cubit.dart' as _i41;
+import '../../features/cart/presentation/cubit/cart_cubit.dart' as _i43;
 import '../../features/home/data/data_source/home_api_remote_data_source.dart'
     as _i14;
 import '../../features/home/data/data_source/home_remote_data_source.dart'
@@ -45,7 +45,10 @@ import '../../features/home/data/repository/home_repository_impl.dart' as _i18;
 import '../../features/home/domain/repository/home_repository.dart' as _i17;
 import '../../features/home/domain/use_cases/get_brands.dart' as _i36;
 import '../../features/home/domain/use_cases/get_categories.dart' as _i37;
-import '../../features/home/presentation/cubit/home_cubit.dart' as _i42;
+import '../../features/home/presentation/cubit/brands/brands_cubit.dart'
+    as _i41;
+import '../../features/home/presentation/cubit/categories/categories_cubit.dart'
+    as _i42;
 import '../../features/products/data/data_source/products_api_remote_data_source.dart'
     as _i16;
 import '../../features/products/data/data_source/products_remote_data_source.dart'
@@ -55,7 +58,7 @@ import '../../features/products/data/repository/products_repository_impl.dart'
 import '../../features/products/domain/repository/products_repository.dart'
     as _i21;
 import '../../features/products/domain/use_cases/get_products.dart' as _i38;
-import '../../features/products/presentation/cubit/products_cubit.dart' as _i43;
+import '../../features/products/presentation/cubit/products_cubit.dart' as _i44;
 import '../../features/wishlist/data/data%20_source/wishlist_api_remote_data_source.dart'
     as _i8;
 import '../../features/wishlist/data/data%20_source/wishlist_remote_data_source.dart'
@@ -64,12 +67,12 @@ import '../../features/wishlist/data/repository/wishlist_repository_impl.dart'
     as _i20;
 import '../../features/wishlist/domain/repository/wishlist_repository.dart'
     as _i19;
-import '../../features/wishlist/domain/use_cases/add_to_wishlist.dart' as _i24;
-import '../../features/wishlist/domain/use_cases/get_wishlist.dart' as _i23;
+import '../../features/wishlist/domain/use_cases/add_to_wishlist.dart' as _i23;
+import '../../features/wishlist/domain/use_cases/get_wishlist.dart' as _i24;
 import '../../features/wishlist/domain/use_cases/remove_from_wishlist.dart'
     as _i25;
 import '../../features/wishlist/presentation/cubit/wishlist_cubit.dart' as _i39;
-import 'register_module.dart' as _i44;
+import 'register_module.dart' as _i45;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -106,10 +109,10 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i20.WishlistRepositoryImpl(gh<_i7.WishlistRemoteDataSource>()));
     gh.singleton<_i21.ProductsRepository>(
         () => _i22.ProductsRepositoryImpl(gh<_i15.ProductsRemoteDataSource>()));
-    gh.singleton<_i23.GetWishlist>(
-        () => _i23.GetWishlist(gh<_i19.WishlistRepository>()));
-    gh.singleton<_i24.AddToWishlist>(
-        () => _i24.AddToWishlist(gh<_i19.WishlistRepository>()));
+    gh.singleton<_i23.AddToWishlist>(
+        () => _i23.AddToWishlist(gh<_i19.WishlistRepository>()));
+    gh.singleton<_i24.GetWishlist>(
+        () => _i24.GetWishlist(gh<_i19.WishlistRepository>()));
     gh.singleton<_i25.RemoveFromWishlist>(
         () => _i25.RemoveFromWishlist(gh<_i19.WishlistRepository>()));
     gh.singleton<_i26.CartRepository>(
@@ -137,25 +140,25 @@ extension GetItInjectableX on _i1.GetIt {
     gh.singleton<_i38.GetProducts>(
         () => _i38.GetProducts(gh<_i21.ProductsRepository>()));
     gh.factory<_i39.WishlistCubit>(() => _i39.WishlistCubit(
-          gh<_i23.GetWishlist>(),
-          gh<_i24.AddToWishlist>(),
+          gh<_i24.GetWishlist>(),
+          gh<_i23.AddToWishlist>(),
           gh<_i25.RemoveFromWishlist>(),
         ));
     gh.singleton<_i40.GetCart>(() => _i40.GetCart(gh<_i26.CartRepository>()));
-    gh.factory<_i41.CartCubit>(() => _i41.CartCubit(
+    gh.singleton<_i41.BrandsCubit>(
+        () => _i41.BrandsCubit(gh<_i36.GetBrands>()));
+    gh.singleton<_i42.CategoriesCubit>(
+        () => _i42.CategoriesCubit(gh<_i37.GetCategories>()));
+    gh.factory<_i43.CartCubit>(() => _i43.CartCubit(
           gh<_i40.GetCart>(),
           gh<_i32.AddToCart>(),
           gh<_i33.UpdateCart>(),
           gh<_i34.RemoveFromCart>(),
         ));
-    gh.singleton<_i42.HomeCubit>(() => _i42.HomeCubit(
-          gh<_i36.GetBrands>(),
-          gh<_i37.GetCategories>(),
-        ));
-    gh.singleton<_i43.ProductsCubit>(
-        () => _i43.ProductsCubit(gh<_i38.GetProducts>()));
+    gh.singleton<_i44.ProductsCubit>(
+        () => _i44.ProductsCubit(gh<_i38.GetProducts>()));
     return this;
   }
 }
 
-class _$RegisterModule extends _i44.RegisterModule {}
+class _$RegisterModule extends _i45.RegisterModule {}

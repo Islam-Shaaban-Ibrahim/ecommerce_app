@@ -1,11 +1,15 @@
+import 'package:ecommerce_app/core/constants.dart';
 import 'package:ecommerce_app/core/di/service_locator.dart';
-import 'package:ecommerce_app/features/home/presentation/cubit/home_cubit.dart';
+import 'package:ecommerce_app/core/utils/ui_utils.dart';
+import 'package:ecommerce_app/features/home/presentation/cubit/brands/brands_cubit.dart';
+import 'package:ecommerce_app/features/home/presentation/cubit/categories/categories_cubit.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/home_tab.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/nav_bar_icon.dart';
+import 'package:ecommerce_app/features/products/presentation/cubit/products_cubit.dart';
 import 'package:ecommerce_app/features/products/presentation/widgets/products_tab.dart';
-import 'package:ecommerce_app/features/profile/presentation/widgets/profile_tab.dart';
 import 'package:ecommerce_app/features/wishlist/presentation/widgets/wishlist_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'home';
@@ -21,14 +25,14 @@ class _HomeScreenState extends State<HomeScreen> {
     HomeTab(),
     ProductsTab(),
     WishlistTab(),
-    ProfileTab(),
   ];
   @override
   void initState() {
     super.initState();
-    serviceLocator.get<HomeCubit>().getCategories().then(
-          (value) => serviceLocator.get<HomeCubit>().getBrands(),
-        );
+    serviceLocator.get<CategoriesCubit>().getCategories();
+    serviceLocator.get<BrandsCubit>().getBrands();
+
+    serviceLocator.get<ProductsCubit>().products = [];
   }
 
   @override
@@ -41,7 +45,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: BottomNavigationBar(
           currentIndex: selectedIndex,
-          onTap: (value) {
+          onTap: (value) async {
+            final sharedPref = await SharedPreferences.getInstance();
+            if (sharedPref.get(CacheConstants.tokenKey) == null && value == 2) {
+              // ignore: use_build_context_synchronously
+              UIUtils.showLogInMessage(context);
+              return;
+            }
             selectedIndex = value;
             setState(() {});
           },
@@ -65,13 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: NavBarIcon(
                 imageName: 'wishlistIcon',
                 isSelected: selectedIndex == 2,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: 'account',
-              icon: NavBarIcon(
-                imageName: 'accountIcon',
-                isSelected: selectedIndex == 3,
               ),
             ),
           ],

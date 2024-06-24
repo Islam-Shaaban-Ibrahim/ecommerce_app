@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/core/bloc_observer.dart';
 import 'package:ecommerce_app/core/di/service_locator.dart';
+import 'package:ecommerce_app/core/search_screen.dart';
 import 'package:ecommerce_app/core/splash_screen.dart';
 import 'package:ecommerce_app/core/theming/app_theme.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/login_screen.dart';
@@ -32,13 +33,14 @@ class ECommerceApp extends StatelessWidget {
         title: 'E-Commerce',
         theme: MyAppTheme.mainTheme,
         debugShowCheckedModeBanner: false,
-        initialRoute: HomeScreen.routeName,
+        initialRoute: SplashScreen.routeName,
         routes: {
           SplashScreen.routeName: (context) => const SplashScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
           RegisterScreen.routeName: (context) => const RegisterScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
           CartScreen.routeName: (context) => CartScreen(),
+          SearchScreen.routeName: (context) => const SearchScreen(),
           ProductDetailsScreen.routeName: (context) =>
               const ProductDetailsScreen(),
         },

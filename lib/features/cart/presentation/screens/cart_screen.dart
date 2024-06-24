@@ -136,24 +136,7 @@ class CartScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      GestureDetector(
-                        child: Container(
-                          width: 265.w,
-                          height: 48.h,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: ColorsManager.primaryColor),
-                          child: Center(
-                            child: Text(
-                              'Check Out',
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      const Spacer(),
                     ],
                   ),
                 ],

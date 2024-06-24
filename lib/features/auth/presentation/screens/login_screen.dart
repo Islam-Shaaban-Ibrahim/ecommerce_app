@@ -162,8 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(RegisterScreen.routeName);
+                    Navigator.of(context).pushNamed(RegisterScreen.routeName);
                   },
                   child: Align(
                     alignment: Alignment.center,

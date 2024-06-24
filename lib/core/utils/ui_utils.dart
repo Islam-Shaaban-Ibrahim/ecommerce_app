@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/core/theming/app_colors.dart';
+import 'package:ecommerce_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -43,7 +44,7 @@ class UIUtils {
     Navigator.of(context).pop();
   }
 
-  static showMessage(
+  static void showMessage(
       {required BuildContext context,
       bool isDismissible = true,
       String title = 'Error',
@@ -51,6 +52,8 @@ class UIUtils {
       String? negAction,
       Function? posActionFunction,
       Function? negAtionFunction,
+      Color? backgroundColor,
+      Color? foregroundColor,
       required String message}) {
     List<Widget> actions = [];
     if (posAction != null) {
@@ -61,10 +64,10 @@ class UIUtils {
                     fontSize: 20.sp,
                   ),
             ),
-            foregroundColor:
-                const MaterialStatePropertyAll<Color>(ColorsManager.whiteColor),
-            backgroundColor:
-                const MaterialStatePropertyAll<Color>(ColorsManager.greyColor),
+            foregroundColor: MaterialStatePropertyAll<Color>(
+                foregroundColor ?? Colors.black),
+            backgroundColor: MaterialStatePropertyAll<Color>(
+                backgroundColor ?? Colors.transparent),
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -81,8 +84,10 @@ class UIUtils {
                 Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontSize: 20.sp,
                     )),
-            foregroundColor:
-                const MaterialStatePropertyAll<Color>(ColorsManager.blackColor),
+            foregroundColor: MaterialStatePropertyAll<Color>(
+                foregroundColor ?? Colors.black),
+            backgroundColor: MaterialStatePropertyAll<Color>(
+                backgroundColor ?? Colors.transparent),
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -111,6 +116,23 @@ class UIUtils {
                         .titleMedium
                         ?.copyWith(fontSize: 16.sp))),
           );
+        });
+  }
+
+  static void showLogInMessage(BuildContext context) {
+    UIUtils.showMessage(
+        foregroundColor: ColorsManager.whiteColor,
+        backgroundColor: ColorsManager.primaryColor,
+        context: context,
+        message:
+            "To manage your cart or wishlist, please log in or sign up. Logging in helps us save your selections and offer a more personalized shopping experience.",
+        title: " Log In Required !",
+        isDismissible: false,
+        negAction: 'Cancel',
+        posAction: 'Log In',
+        posActionFunction: () {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(LoginScreen.routeName, (route) => false);
         });
   }
 }

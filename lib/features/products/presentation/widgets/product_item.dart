@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app/core/constants.dart';
 import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:ecommerce_app/core/utils/ui_utils.dart';
@@ -11,6 +12,7 @@ import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_sate
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class ProductItem extends StatefulWidget {
@@ -95,11 +97,19 @@ class _ProductItemState extends State<ProductItem> {
                     },
                     child: GestureDetector(
                       onTap: () async {
-                        if (!widget.isAdded) {
-                          await wishlistCubit.addToWishlist(widget.product.id);
+                        final sharedPref =
+                            await SharedPreferences.getInstance();
+                        if (sharedPref.get(CacheConstants.tokenKey) == null) {
+                          // ignore: use_build_context_synchronously
+                          UIUtils.showLogInMessage(context);
                         } else {
-                          await wishlistCubit
-                              .removeFromWishlist(widget.product.id);
+                          if (!widget.isAdded) {
+                            await wishlistCubit
+                                .addToWishlist(widget.product.id);
+                          } else {
+                            await wishlistCubit
+                                .removeFromWishlist(widget.product.id);
+                          }
                         }
                       },
                       child: Image.asset(
@@ -188,8 +198,15 @@ class _ProductItemState extends State<ProductItem> {
                         }
                       },
                       child: GestureDetector(
-                        onTap: () {
-                          cartCubit.addToCart(widget.product.id);
+                        onTap: () async {
+                          final sharedPref =
+                              await SharedPreferences.getInstance();
+                          if (sharedPref.get(CacheConstants.tokenKey) == null) {
+                            // ignore: use_build_context_synchronously
+                            UIUtils.showLogInMessage(context);
+                          } else {
+                            cartCubit.addToCart(widget.product.id);
+                          }
                         },
                         child: Icon(
                           size: 30.sp,
