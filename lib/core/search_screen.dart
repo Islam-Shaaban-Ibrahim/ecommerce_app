@@ -43,13 +43,6 @@ class _SearchScreenState extends State<SearchScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-              productsCubit.getProducts();
-            },
-          ),
           centerTitle: false,
           title: Image.asset(
             'assets/images/routeLogo.png',

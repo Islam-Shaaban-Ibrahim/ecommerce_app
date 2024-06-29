@@ -52,6 +52,8 @@ class _ProductItemState extends State<ProductItem> {
                 alignment: AlignmentDirectional.topEnd,
                 children: [
                   CachedNetworkImage(
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        Image.asset('assets/images/loading.gif'),
                     errorWidget: (context, url, error) =>
                         Icon(size: 50.sp, Icons.error_outline_outlined),
                     width: double.infinity,
@@ -59,68 +61,67 @@ class _ProductItemState extends State<ProductItem> {
                     fit: BoxFit.cover,
                     imageUrl: widget.product.imageCover,
                   ),
-                  BlocListener<WishlistCubit, WishlistState>(
-                    bloc: wishlistCubit,
-                    listener: (context, state) {
-                      if (state is AddToWishlistLoading ||
-                          state is RemoveFromWishlistLoading) {
-                        UIUtils.showLoading(
-                            isDismissible: false,
-                            context: context,
-                            actionName: "Loading...");
-                      } else if (state is AddToWishlistError) {
-                        UIUtils.hideLoading(context: context);
-                        UIUtils.showMessage(
-                            isDismissible: false,
-                            context: context,
-                            message: state.message,
-                            negAction: 'Cancel');
-                      } else if (state is RemoveFromWishlistError) {
-                        UIUtils.hideLoading(context: context);
-                        UIUtils.showMessage(
-                            isDismissible: false,
-                            context: context,
-                            message: state.message,
-                            negAction: 'Cancel');
-                      } else if (state is AddToWishlistSuccess ||
-                          state is RemoveFromWishlistSuccess) {
-                        if (state is AddToWishlistSuccess) {
-                          widget.isAdded = true;
-                          ProductsTab.productsIds.add(widget.product.id);
+                  GestureDetector(
+                    onTap: () async {
+                      final sharedPref = await SharedPreferences.getInstance();
+                      if (sharedPref.get(CacheConstants.tokenKey) == null) {
+                        // ignore: use_build_context_synchronously
+                        UIUtils.showLogInMessage(context);
+                      } else {
+                        if (!widget.isAdded) {
+                          await wishlistCubit.addToWishlist(widget.product.id);
                         } else {
-                          ProductsTab.productsIds.remove(widget.product.id);
-                          widget.isAdded = false;
+                          await wishlistCubit
+                              .removeFromWishlist(widget.product.id);
                         }
-                        setState(() {});
-                        UIUtils.hideLoading(context: context);
                       }
                     },
-                    child: GestureDetector(
-                      onTap: () async {
-                        final sharedPref =
-                            await SharedPreferences.getInstance();
-                        if (sharedPref.get(CacheConstants.tokenKey) == null) {
-                          // ignore: use_build_context_synchronously
-                          UIUtils.showLogInMessage(context);
-                        } else {
-                          if (!widget.isAdded) {
-                            await wishlistCubit
-                                .addToWishlist(widget.product.id);
+                    child: BlocConsumer<WishlistCubit, WishlistState>(
+                      bloc: wishlistCubit,
+                      listener: (context, state) {
+                        if (state is AddToWishlistLoading ||
+                            state is RemoveFromWishlistLoading) {
+                          UIUtils.showLoading(
+                              isDismissible: false,
+                              context: context,
+                              actionName: "Loading...");
+                        } else if (state is AddToWishlistError) {
+                          UIUtils.hideLoading(context: context);
+                          UIUtils.showMessage(
+                              isDismissible: false,
+                              context: context,
+                              message: state.message,
+                              negAction: 'Cancel');
+                        } else if (state is RemoveFromWishlistError) {
+                          UIUtils.hideLoading(context: context);
+                          UIUtils.showMessage(
+                              isDismissible: false,
+                              context: context,
+                              message: state.message,
+                              negAction: 'Cancel');
+                        } else if (state is AddToWishlistSuccess ||
+                            state is RemoveFromWishlistSuccess) {
+                          if (state is AddToWishlistSuccess) {
+                            widget.isAdded = true;
+                            ProductsTab.productsIds.add(widget.product.id);
                           } else {
-                            await wishlistCubit
-                                .removeFromWishlist(widget.product.id);
+                            ProductsTab.productsIds.remove(widget.product.id);
+                            widget.isAdded = false;
                           }
+                          UIUtils.hideLoading(context: context);
                         }
                       },
-                      child: Image.asset(
-                        widget.isAdded
-                            ? 'assets/images/wishIconFilled.png'
-                            : 'assets/images/wishlistSign.png',
-                        filterQuality: FilterQuality.high,
-                        width: 50.w,
-                        height: 50.h,
-                        fit: BoxFit.cover,
-                      ),
+                      builder: (context, state) {
+                        return Image.asset(
+                          widget.isAdded
+                              ? 'assets/images/wishIconFilled.png'
+                              : 'assets/images/wishlistSign.png',
+                          filterQuality: FilterQuality.high,
+                          width: 50.w,
+                          height: 50.h,
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   ),
                 ],

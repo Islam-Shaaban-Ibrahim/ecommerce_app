@@ -1,5 +1,7 @@
+import 'package:ecommerce_app/core/search_screen.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
-import 'package:ecommerce_app/core/widgets/search_bar_with_cart.dart';
+import 'package:ecommerce_app/core/widgets/cart_widget.dart';
+import 'package:ecommerce_app/core/widgets/search_text_field.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/announcement_section.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/brands_section.dart';
 import 'package:ecommerce_app/features/home/presentation/widgets/categories_section.dart';
@@ -30,7 +32,20 @@ class HomeTab extends StatelessWidget {
                 filterQuality: FilterQuality.high,
               ),
             ),
-            const SearchBarWithCart(),
+            Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(SearchScreen.routeName);
+                    },
+                    child: const SearchTextField(),
+                  ),
+                ),
+                SizedBox(width: 26.w),
+                const CartWidget(),
+              ],
+            ),
             SizedBox(height: 16.h),
             const AnnouncementSection(),
             SizedBox(height: 20.h),
