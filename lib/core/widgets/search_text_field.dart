@@ -1,6 +1,5 @@
 // ignore_for_file: file_names
 
-import 'package:ecommerce_app/core/search_screen.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,10 +10,14 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      readOnly: true,
-      onTap: () => Navigator.of(context).pushNamed(SearchScreen.routeName),
+      enabled: false,
       cursorColor: Theme.of(context).primaryColor,
       decoration: InputDecoration(
+        disabledBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(color: ColorsManager.primaryColor, width: 1.2),
+          borderRadius: BorderRadius.circular(30.r),
+        ),
         contentPadding: EdgeInsets.all(16.h),
         prefixIcon: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w),
@@ -34,13 +37,6 @@ class SearchTextField extends StatelessWidget {
           borderSide:
               const BorderSide(color: ColorsManager.primaryColor, width: 1.2),
           borderRadius: BorderRadius.circular(30.r),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide:
-              const BorderSide(color: ColorsManager.primaryColor, width: 1.2),
-          borderRadius: BorderRadius.circular(
-            30.r,
-          ),
         ),
       ),
     );

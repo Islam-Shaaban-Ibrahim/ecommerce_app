@@ -1,14 +1,15 @@
 import 'package:ecommerce_app/core/di/service_locator.dart';
+import 'package:ecommerce_app/core/search_screen.dart';
 import 'package:ecommerce_app/core/widgets/error_indicator.dart';
 import 'package:ecommerce_app/core/widgets/loading_indicator.dart';
-import 'package:ecommerce_app/core/widgets/search_bar_with_cart.dart';
+import 'package:ecommerce_app/core/widgets/cart_widget.dart';
+import 'package:ecommerce_app/core/widgets/search_text_field.dart';
 import 'package:ecommerce_app/features/products/presentation/cubit/products_cubit.dart';
 import 'package:ecommerce_app/features/products/presentation/cubit/products_states.dart';
 import 'package:ecommerce_app/features/products/presentation/widgets/product_item.dart';
 import 'package:ecommerce_app/features/products/presentation/screens/product_details_screen.dart';
 import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -52,7 +53,24 @@ class _ProductsTabState extends State<ProductsTab> {
               filterQuality: FilterQuality.high,
             ),
           ),
-          const SearchBarWithCart(),
+          Row(
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(SearchScreen.routeName)
+                        .then(
+                          (value) => setState(() {}),
+                        );
+                  },
+                  child: const SearchTextField(),
+                ),
+              ),
+              SizedBox(width: 26.w),
+              const CartWidget(),
+            ],
+          ),
           SizedBox(height: 16.h),
           Expanded(
             child: BlocBuilder<ProductsCubit, ProductsState>(

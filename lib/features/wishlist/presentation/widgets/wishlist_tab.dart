@@ -2,7 +2,7 @@ import 'package:ecommerce_app/core/di/service_locator.dart';
 import 'package:ecommerce_app/core/theming/app_colors.dart';
 import 'package:ecommerce_app/core/widgets/error_indicator.dart';
 import 'package:ecommerce_app/core/widgets/loading_indicator.dart';
-import 'package:ecommerce_app/core/widgets/search_bar_with_cart.dart';
+import 'package:ecommerce_app/core/widgets/cart_widget.dart';
 import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_cubit.dart';
 import 'package:ecommerce_app/features/wishlist/presentation/cubit/wishlist_sates.dart';
 import 'package:ecommerce_app/features/wishlist/presentation/widgets/wishlist_item.dart';
@@ -31,8 +31,11 @@ class WishlistTab extends StatelessWidget {
               filterQuality: FilterQuality.high,
             ),
           ),
-          const SearchBarWithCart(),
-          SizedBox(height: 16.h),
+          const Align(
+            alignment: Alignment.bottomRight,
+            child: CartWidget(),
+          ),
+          SizedBox(height: 20.h),
           Expanded(
             child: BlocBuilder<WishlistCubit, WishlistState>(
               bloc: wishlistCubit,
